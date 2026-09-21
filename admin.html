@@ -127,7 +127,7 @@
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
                     <td class="p-2.5 font-bold text-slate-100">${sub.name}</td>
-                    <td class="p-2.5"><span class="bg-slate-800 text-slate-300 px-2 py-0.5 rounded border border-slate-700 text-[10px]">${sub.alliance}</span></td>
+                    <td class="p-2.5"><span class="bg-slate-800 text-slate-300 px-2 py-0.5 rounded border border-slate-700 text-[10px] font-mono">${sub.alliance}</span></td>
                     <td class="p-2.5 text-right font-mono">${(sub.constMins/60).toFixed(1)}h</td>
                     <td class="p-2.5 text-right font-mono">${(sub.resMins/60).toFixed(1)}h</td>
                     <td class="p-2.5 text-right font-mono">${(sub.troopMins/60).toFixed(1)}h</td>
@@ -148,7 +148,8 @@
             const rows = document.querySelectorAll('#admin-table-body tr');
             rows.forEach(row => {
                 const name = row.children[0].innerText.toLowerCase();
-                row.style.display = name.includes(query) ? '' : 'none';
+                const alliance = row.children[1].innerText.toLowerCase();
+                row.style.display = (name.includes(query) || alliance.includes(query)) ? '' : 'none';
             });
         }
 
