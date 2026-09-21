@@ -59,12 +59,12 @@
                     <p id="adm-stat-count" class="text-lg font-mono font-bold text-slate-100 mt-1">0</p>
                 </div>
                 <div class="bg-dark-900 border border-slate-800 rounded-xl p-3 text-center">
-                    <p class="text-[10px] text-slate-400 uppercase font-semibold">Const. Hours</p>
-                    <p id="adm-stat-const" class="text-lg font-mono font-bold text-amber-400 mt-1">0h</p>
+                    <p class="text-[10px] text-slate-400 uppercase font-semibold">Const. Duration</p>
+                    <p id="adm-stat-const" class="text-lg font-mono font-bold text-amber-400 mt-1">0d 0h</p>
                 </div>
                 <div class="bg-dark-900 border border-slate-800 rounded-xl p-3 text-center">
-                    <p class="text-[10px] text-slate-400 uppercase font-semibold">Troop Hours</p>
-                    <p id="adm-stat-troop" class="text-lg font-mono font-bold text-emerald-400 mt-1">0h</p>
+                    <p class="text-[10px] text-slate-400 uppercase font-semibold">Troop Duration</p>
+                    <p id="adm-stat-troop" class="text-lg font-mono font-bold text-emerald-400 mt-1">0d 0h</p>
                 </div>
             </div>
 
@@ -117,6 +117,19 @@
             }
         }
 
+        // Helper function to format total minutes into Days and Hours string
+        function formatMinutesToDaysHours(totalMins) {
+            if (!totalMins || totalMins <= 0) return "0d 0h";
+            const days = Math.floor(totalMins / 1440);
+            const remainingMins = totalMins % 1440;
+            const hours = Math.floor(remainingMins / 60);
+
+            if (days > 0) {
+                return `${days}d ${hours}h`;
+            }
+            return `${hours}h`;
+        }
+
         function renderAdminDashboard() {
             let totalPoints = 0, totalConstMins = 0, totalTroopMins = 0;
             const tbody = document.getElementById('admin-table-body');
@@ -131,10 +144,10 @@
                 tr.innerHTML = `
                     <td class="p-2.5 font-bold text-slate-100">${sub.name}</td>
                     <td class="p-2.5"><span class="bg-slate-800 text-slate-300 px-2 py-0.5 rounded border border-slate-700 text-[10px] font-mono">${sub.alliance}</span></td>
-                    <td class="p-2.5 text-right font-mono">${(sub.constMins/60).toFixed(1)}h</td>
-                    <td class="p-2.5 text-right font-mono">${(sub.resMins/60).toFixed(1)}h</td>
-                    <td class="p-2.5 text-right font-mono">${(sub.troopMins/60).toFixed(1)}h</td>
-                    <td class="p-2.5 text-right font-mono">${(sub.genMins/60).toFixed(1)}h</td>
+                    <td class="p-2.5 text-right font-mono">${formatMinutesToDaysHours(sub.constMins)}</td>
+                    <td class="p-2.5 text-right font-mono">${formatMinutesToDaysHours(sub.resMins)}</td>
+                    <td class="p-2.5 text-right font-mono">${formatMinutesToDaysHours(sub.troopMins)}</td>
+                    <td class="p-2.5 text-right font-mono">${formatMinutesToDaysHours(sub.genMins)}</td>
                     <td class="p-2.5 text-right font-mono font-bold text-gold-400">${sub.totalPoints.toLocaleString()}</td>
                 `;
                 tbody.appendChild(tr);
@@ -142,8 +155,8 @@
 
             document.getElementById('adm-stat-points').innerText = totalPoints.toLocaleString();
             document.getElementById('adm-stat-count').innerText = memberSubmissions.length;
-            document.getElementById('adm-stat-const').innerText = (totalConstMins/60).toFixed(0) + 'h';
-            document.getElementById('adm-stat-troop').innerText = (totalTroopMins/60).toFixed(0) + 'h';
+            document.getElementById('adm-stat-const').innerText = formatMinutesToDaysHours(totalConstMins);
+            document.getElementById('adm-stat-troop').innerText = formatMinutesToDaysHours(totalTroopMins);
         }
 
         function filterAdminTable() {
@@ -157,9 +170,9 @@
         }
 
         function exportToCSV() {
-            let csv = 'Name,Alliance,Construction Hours,Research Hours,Troop Hours,General Hours,Total Points\n';
+            let csv = 'Name,Alliance,Construction Duration,Research Duration,Troop Duration,General Duration,Total Points\n';
             memberSubmissions.forEach(s => {
-                csv += `"${s.name}","${s.alliance}",${(s.constMins/60).toFixed(2)},${(s.resMins/60).toFixed(2)},${(s.troopMins/60).toFixed(2)},${(s.genMins/60).toFixed(2)},${s.totalPoints}\n`;
+                csv += `"${s.name}","${s.alliance}","${formatMinutesToDaysHours(s.constMins)}","${formatMinutesToDaysHours(s.resMins)}","${formatMinutesToDaysHours(s.troopMins)}","${formatMinutesToDaysHours(s.genMins)}",${s.totalPoints}\n`;
             });
             const blob = new Blob([csv], { type: 'text/csv' });
             const url = window.URL.createObjectURL(blob);
