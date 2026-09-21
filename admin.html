@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KingShot KvK Admin Portal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        gold: { 400: '#facc15', 500: '#eab308', 600: '#ca8a04' },
+                        dark: { 900: '#0f172a', 950: '#020617' }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-dark-950 text-slate-100 min-h-screen flex flex-col font-sans">
+    <header class="bg-dark-900 border-b border-slate-800 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <div class="bg-gold-500/10 p-2 rounded-lg border border-gold-500/30">
+                    <i class="fa-solid fa-user-shield text-gold-500 text-xl"></i>
+                </div>
+                <div>
+                    <h1 class="text-lg font-bold text-gold-400">Kingdom Admin Portal</h1>
+                    <p class="text-xs text-slate-400">Restricted Leadership View</p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow max-w-7xl mx-auto w-full px-4 py-6">
+        <!-- LOGIN SCREEN -->
+        <div id="login-container" class="max-w-xs mx-auto mt-12 bg-dark-900 border border-slate-800 rounded-xl p-5 text-center space-y-4 shadow-2xl">
+            <i class="fa-solid fa-shield-halved text-gold-500 text-4xl"></i>
+            <div>
+                <h3 class="text-base font-bold text-slate-100">Admin Authentication</h3>
+                <p class="text-xs text-slate-400 mt-1">Enter Admin PIN to unlock kingdom data</p>
+            </div>
+            <input type="password" id="pin-input" maxlength="4" placeholder="••••" class="w-full bg-dark-950 border border-slate-700 text-center text-2xl tracking-widest font-mono text-gold-400 py-2 rounded-lg focus:outline-none focus:border-gold-500">
+            <p id="pin-error" class="hidden text-[11px] text-red-400 font-semibold">Incorrect PIN. Access Denied.</p>
+            <button onclick="verifyAdminPin()" class="w-full bg-gold-500 hover:bg-gold-400 text-dark-950 font-bold text-xs py-2.5 rounded-lg transition">Unlock Dashboard</button>
+        </div>
+
+        <!-- DASHBOARD (HIDDEN UNTIL LOGIN) -->
+        <div id="admin-dashboard" class="hidden space-y-6">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                <div class="bg-dark-900 border border-slate-800 rounded-xl p-3 text-center">
+                    <p class="text-[10px] text-slate-400 uppercase font-semibold">Total Kingdom Points</p>
+                    <p id="adm-stat-points" class="text-lg font-mono font-bold text-gold-400 mt-1">0</p>
+                </div>
+                <div class="bg-dark-900 border border-slate-800 rounded-xl p-3 text-center">
+                    <p class="text-[10px] text-slate-400 uppercase font-semibold">Submissions</p>
+                    <p id="adm-stat-count" class="text-lg font-mono font-bold text-slate-100 mt-1">0</p>
+                </div>
+                <div class="bg-dark-900 border border-slate-800 rounded-xl p-3 text-center">
+                    <p class="text-[10px] text-slate-400 uppercase font-semibold">Const. Hours</p>
+                    <p id="adm-stat-const" class="text-lg font-mono font-bold text-amber-400 mt-1">0h</p>
+                </div>
+                <div class="bg-dark-900 border border-slate-800 rounded-xl p-3 text-center">
+                    <p class="text-[10px] text-slate-400 uppercase font-semibold">Troop Hours</p>
+                    <p id="adm-stat-troop" class="text-lg font-mono font-bold text-emerald-400 mt-1">0h</p>
+                </div>
+            </div>
+
+            <div class="bg-dark-900 border border-slate-800 rounded-xl p-4 space-y-4">
+                <div class="flex flex-col md:flex-row justify-between md:items-center gap-3">
+                    <h3 class="text-sm font-bold uppercase text-slate-200">Member Submissions Breakdown</h3>
+                    <div class="flex gap-2">
+                        <input type="text" id="admin-search" oninput="filterAdminTable()" placeholder="Search member name..." class="bg-dark-950 border border-slate-700 text-xs px-3 py-1.5 rounded-lg text-slate-200">
+                        <button onclick="exportToCSV()" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs px-3 py-1.5 rounded-lg flex items-center gap-1.5">
+                            <i class="fa-solid fa-file-csv"></i> Export CSV
+                        </button>
+                    </div>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse text-xs">
+                        <thead>
+                            <tr class="bg-dark-950 text-slate-400 uppercase border-b border-slate-800">
+                                <th class="p-2.5">Player</th>
+                                <th class="p-2.5">Alliance</th>
+                                <th class="p-2.5 text-right">Construction</th>
+                                <th class="p-2.5 text-right">Research</th>
+                                <th class="p-2.5 text-right">Troops</th>
+                                <th class="p-2.5 text-right">General</th>
+                                <th class="p-2.5 text-right">Total Points</th>
+                            </tr>
+                        </thead>
+                        <tbody id="admin-table-body" class="divide-y divide-slate-800 text-slate-300"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const ADMIN_PIN = "2106";
+        let memberSubmissions = JSON.parse(localStorage.getItem("kvk_submissions") || "[]");
+
+        function verifyAdminPin() {
+            const input = document.getElementById('pin-input').value;
+            if(input === ADMIN_PIN) {
+                document.getElementById('login-container').classList.add('hidden');
+                document.getElementById('admin-dashboard').classList.remove('hidden');
+                renderAdminDashboard();
+            } else {
+                document.getElementById('pin-error').classList.remove('hidden');
+            }
+        }
+
+        function renderAdminDashboard() {
+            let totalPoints = 0, totalConstMins = 0, totalTroopMins = 0;
+            const tbody = document.getElementById('admin-table-body');
+            tbody.innerHTML = '';
+
+            memberSubmissions.forEach(sub => {
+                totalPoints += sub.totalPoints;
+                totalConstMins += sub.constMins;
+                totalTroopMins += sub.troopMins;
+
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td class="p-2.5 font-bold text-slate-100">${sub.name}</td>
+                    <td class="p-2.5"><span class="bg-slate-800 text-slate-300 px-2 py-0.5 rounded border border-slate-700 text-[10px]">${sub.alliance}</span></td>
+                    <td class="p-2.5 text-right font-mono">${(sub.constMins/60).toFixed(1)}h</td>
+                    <td class="p-2.5 text-right font-mono">${(sub.resMins/60).toFixed(1)}h</td>
+                    <td class="p-2.5 text-right font-mono">${(sub.troopMins/60).toFixed(1)}h</td>
+                    <td class="p-2.5 text-right font-mono">${(sub.genMins/60).toFixed(1)}h</td>
+                    <td class="p-2.5 text-right font-mono font-bold text-gold-400">${sub.totalPoints.toLocaleString()}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            document.getElementById('adm-stat-points').innerText = totalPoints.toLocaleString();
+            document.getElementById('adm-stat-count').innerText = memberSubmissions.length;
+            document.getElementById('adm-stat-const').innerText = (totalConstMins/60).toFixed(0) + 'h';
+            document.getElementById('adm-stat-troop').innerText = (totalTroopMins/60).toFixed(0) + 'h';
+        }
+
+        function filterAdminTable() {
+            const query = document.getElementById('admin-search').value.toLowerCase();
+            const rows = document.querySelectorAll('#admin-table-body tr');
+            rows.forEach(row => {
+                const name = row.children[0].innerText.toLowerCase();
+                row.style.display = name.includes(query) ? '' : 'none';
+            });
+        }
+
+        function exportToCSV() {
+            let csv = 'Name,Alliance,Construction Hours,Research Hours,Troop Hours,General Hours,Total Points\n';
+            memberSubmissions.forEach(s => {
+                csv += `"${s.name}","${s.alliance}",${(s.constMins/60).toFixed(2)},${(s.resMins/60).toFixed(2)},${(s.troopMins/60).toFixed(2)},${(s.genMins/60).toFixed(2)},${s.totalPoints}\n`;
+            });
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.setAttribute('href', url);
+            a.setAttribute('download', 'Kingshot_KvK_Day1_Speedups.csv');
+            a.click();
+        }
+    </script>
+</body>
+</html>
