@@ -56,7 +56,7 @@
                     </div>
                 </div>
 
-                <!-- TIMEZONE & DEMAND LEGEND -->
+                <!-- TIMEZONE TOGGLE & DEMAND LEGEND -->
                 <div class="space-y-3">
                     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 bg-dark-950 p-3 rounded-lg border border-slate-800">
                         <span class="text-xs font-bold uppercase text-slate-300">Timezone Display:</span>
@@ -126,12 +126,12 @@
                         <input type="number" id="d1-speedups" min="0" value="0" oninput="calculateLivePoints()" class="w-full bg-dark-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-100">
                     </div>
                     <div>
-                        <label class="block text-[11px] font-semibold text-slate-400 uppercase mb-1">TrueGold</label>
-                        <input type="number" id="d1-truegold" min="0" value="0" class="w-full bg-dark-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-100">
+                        <label class="block text-[11px] font-semibold text-slate-400 uppercase mb-1">TrueGold (2k pts/ea)</label>
+                        <input type="number" id="d1-truegold" min="0" value="0" oninput="calculateLivePoints()" class="w-full bg-dark-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-100">
                     </div>
                     <div>
-                        <label class="block text-[11px] font-semibold text-slate-400 uppercase mb-1">Tempered TrueGold</label>
-                        <input type="number" id="d1-tempered" min="0" value="0" class="w-full bg-dark-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-100">
+                        <label class="block text-[11px] font-semibold text-slate-400 uppercase mb-1">Tempered TrueGold (30k pts/ea)</label>
+                        <input type="number" id="d1-tempered" min="0" value="0" oninput="calculateLivePoints()" class="w-full bg-dark-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-100">
                     </div>
                 </div>
 
@@ -163,8 +163,8 @@
                         <input type="number" id="d2-speedups" min="0" value="0" oninput="calculateLivePoints()" class="w-full bg-dark-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-100">
                     </div>
                     <div>
-                        <label class="block text-[11px] font-semibold text-slate-400 uppercase mb-1">TrueGold Dust</label>
-                        <input type="number" id="d2-truegold-dust" min="0" value="0" class="w-full bg-dark-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-100">
+                        <label class="block text-[11px] font-semibold text-slate-400 uppercase mb-1">TrueGold Dust (1k pts/ea)</label>
+                        <input type="number" id="d2-truegold-dust" min="0" value="0" oninput="calculateLivePoints()" class="w-full bg-dark-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-100">
                     </div>
                 </div>
 
@@ -205,7 +205,7 @@
             <div class="bg-gradient-to-r from-gold-500/10 via-amber-500/10 to-gold-500/10 border border-gold-500/30 rounded-xl p-4 text-center">
                 <p class="text-xs font-semibold uppercase text-slate-300">Total Calculated Score Across All Days</p>
                 <p id="total-points-preview" class="text-2xl font-black text-gold-400 font-mono mt-1">0 Points</p>
-                <p class="text-[11px] text-slate-400 mt-1">1 Min Speedup = 30 Points</p>
+                <p class="text-[11px] text-slate-400 mt-1">1m Speedup = 30 pts | 1 TrueGold = 2k pts | 1 Dust = 1k pts | 1 Tempered = 30k pts</p>
             </div>
 
             <button type="submit" id="submit-btn" class="w-full bg-gold-500 hover:bg-gold-400 text-dark-950 font-bold py-3.5 px-4 rounded-xl shadow-lg transition flex justify-center items-center gap-2">
@@ -244,6 +244,8 @@
             currentTz = tz;
             document.getElementById('tz-utc').className = tz === 'UTC' ? "px-3 py-1 rounded-md font-semibold bg-gold-500 text-dark-950 transition" : "px-3 py-1 rounded-md font-semibold text-slate-400 hover:text-slate-200 transition";
             document.getElementById('tz-local').className = tz === 'Local' ? "px-3 py-1 rounded-md font-semibold bg-gold-500 text-dark-950 transition" : "px-3 py-1 rounded-md font-semibold text-slate-400 hover:text-slate-200 transition";
+            
+            ['d1', 'd2', 'd4'].forEach(generateTimeSlots);
         }
 
         function setSectionUnit(section, unit) {
@@ -260,6 +262,20 @@
             calculateLivePoints();
         }
 
+        function convertUtcToLocalSlot(utcStartH, utcStartM) {
+            const now = new Date();
+            const utcDate = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), utcStartH, utcStartM));
+            
+            const startH = String(utcDate.getHours()).padStart(2, '0');
+            const startM = String(utcDate.getMinutes()).padStart(2, '0');
+            
+            const endDate = new Date(utcDate.getTime() + 30 * 60000);
+            const endH = String(endDate.getHours()).padStart(2, '0');
+            const endM = String(endDate.getMinutes()).padStart(2, '0');
+
+            return `${startH}:${startM}-${endH}:${endM}`;
+        }
+
         function generateTimeSlots(sectionId) {
             const grid = document.getElementById(`${sectionId}-slots-grid`);
             grid.innerHTML = '';
@@ -270,20 +286,24 @@
                     const startM = String(m).padStart(2, '0');
                     const endH = m === 30 ? String((h + 1) % 24).padStart(2, '0') : startH;
                     const endM = m === 30 ? '00' : '30';
-                    const slotLabel = `${startH}:${startM}-${endH}:${endM}`;
+                    const utcSlotKey = `${startH}:${startM}-${endH}:${endM}`;
+
+                    const slotDisplayLabel = currentTz === 'Local' ? convertUtcToLocalSlot(h, m) : utcSlotKey;
 
                     const btn = document.createElement('button');
                     btn.type = 'button';
-                    btn.className = `p-1.5 rounded border border-emerald-500/40 bg-emerald-500/10 text-[10px] font-mono flex flex-col items-center justify-center hover:border-gold-500 transition relative text-slate-300`;
-                    btn.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-emerald-500 mb-0.5"></span>${slotLabel}`;
+                    
+                    const isSelected = selectedSlots[sectionId].has(utcSlotKey);
+                    btn.className = `p-1.5 rounded border ${isSelected ? 'border-gold-500 bg-gold-500/20 text-gold-400' : 'border-emerald-500/40 bg-emerald-500/10 text-slate-300'} text-[10px] font-mono flex flex-col items-center justify-center hover:border-gold-500 transition relative`;
+                    btn.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-emerald-500 mb-0.5"></span>${slotDisplayLabel}`;
                     
                     btn.onclick = () => {
-                        if (selectedSlots[sectionId].has(slotLabel)) {
-                            selectedSlots[sectionId].delete(slotLabel);
-                            btn.classList.remove('border-gold-500', 'bg-gold-500/20', 'text-gold-400');
+                        if (selectedSlots[sectionId].has(utcSlotKey)) {
+                            selectedSlots[sectionId].delete(utcSlotKey);
+                            btn.className = 'p-1.5 rounded border border-emerald-500/40 bg-emerald-500/10 text-slate-300 text-[10px] font-mono flex flex-col items-center justify-center hover:border-gold-500 transition relative';
                         } else {
-                            selectedSlots[sectionId].add(slotLabel);
-                            btn.classList.add('border-gold-500', 'bg-gold-500/20', 'text-gold-400');
+                            selectedSlots[sectionId].add(utcSlotKey);
+                            btn.className = 'p-1.5 rounded border border-gold-500 bg-gold-500/20 text-gold-400 text-[10px] font-mono flex flex-col items-center justify-center hover:border-gold-500 transition relative';
                         }
                     };
                     grid.appendChild(btn);
@@ -302,7 +322,15 @@
             const d1Mins = getMinutes('d1');
             const d2Mins = getMinutes('d2');
             const d4Mins = getMinutes('d4');
-            const totalPoints = (d1Mins + d2Mins + d4Mins) * 30;
+
+            const trueGold = parseFloat(document.getElementById('d1-truegold').value) || 0;
+            const temperedTrueGold = parseFloat(document.getElementById('d1-tempered').value) || 0;
+            const trueGoldDust = parseFloat(document.getElementById('d2-truegold-dust').value) || 0;
+
+            const speedupPoints = (d1Mins + d2Mins + d4Mins) * 30;
+            const resourcePoints = (trueGold * 2000) + (trueGoldDust * 1000) + (temperedTrueGold * 30000);
+
+            const totalPoints = speedupPoints + resourcePoints;
 
             document.getElementById('total-points-preview').innerText = `${totalPoints.toLocaleString()} Points`;
             return totalPoints;
