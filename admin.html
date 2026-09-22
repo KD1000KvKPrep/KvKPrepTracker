@@ -21,192 +21,270 @@
 </head>
 <body class="bg-dark-950 text-slate-100 min-h-screen flex flex-col font-sans">
     <header class="bg-dark-900 border-b border-slate-800 sticky top-0 z-50">
-        <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
             <div class="flex items-center space-x-3">
                 <div class="bg-gold-500/10 p-2 rounded-lg border border-gold-500/30">
                     <i class="fa-solid fa-user-shield text-gold-500 text-xl"></i>
                 </div>
                 <div>
-                    <h1 class="text-lg font-bold uppercase text-gold-400">KvK Command Center</h1>
-                    <p class="text-xs text-slate-400">Alliance Member Submissions & Overview</p>
+                    <h1 class="text-lg font-bold uppercase text-gold-400">KvK Admin Dashboard</h1>
+                    <p class="text-xs text-slate-400">Alliance & Submission Overview</p>
                 </div>
             </div>
-            <div class="flex items-center gap-2">
-                <button onclick="clearAllData()" class="text-xs bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/30 px-3 py-1.5 rounded-lg transition">
-                    <i class="fa-solid fa-trash-can mr-1"></i> Clear Submissions
-                </button>
-                <a href="player.html" class="text-xs bg-gold-500 hover:bg-gold-400 text-dark-950 font-bold px-3 py-1.5 rounded-lg transition">
-                    <i class="fa-solid fa-plus mr-1"></i> Player Portal
-                </a>
-            </div>
+            <a href="player.html" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold py-1.5 px-3 rounded-lg border border-slate-700 transition">
+                <i class="fa-solid fa-gamepad mr-1"></i> Player Portal
+            </a>
         </div>
     </header>
 
-    <main class="flex-grow max-w-6xl mx-auto w-full px-4 py-6 space-y-6">
+    <main class="flex-grow max-w-7xl mx-auto w-full px-4 py-6 space-y-6">
         
-        <!-- SUMMARY STATS -->
+        <!-- SUMMARY METRICS -->
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
-            <div class="bg-dark-900 border border-slate-800 rounded-xl p-4 shadow-lg">
-                <p class="text-xs font-semibold uppercase text-slate-400">Total Players Submitted</p>
-                <p id="stat-players" class="text-2xl font-black text-slate-100 font-mono mt-1">0</p>
+            <div class="bg-dark-900 border border-slate-800 p-4 rounded-xl shadow-lg">
+                <p class="text-xs font-semibold text-slate-400 uppercase">Total Submissions</p>
+                <p id="metric-count" class="text-2xl font-black text-slate-100 mt-1">0</p>
             </div>
-            <div class="bg-dark-900 border border-slate-800 rounded-xl p-4 shadow-lg">
-                <p class="text-xs font-semibold uppercase text-slate-400">Total Speedup Duration</p>
-                <p id="stat-speedups" class="text-2xl font-black text-sky-400 font-mono mt-1">0m</p>
+            <div class="bg-dark-900 border border-slate-800 p-4 rounded-xl shadow-lg">
+                <p class="text-xs font-semibold text-slate-400 uppercase">Total Calculated Score</p>
+                <p id="metric-points" class="text-2xl font-black text-gold-400 font-mono mt-1">0</p>
             </div>
-            <div class="bg-dark-900 border border-slate-800 rounded-xl p-4 shadow-lg">
-                <p class="text-xs font-semibold uppercase text-slate-400">Total Calculated Score</p>
-                <p id="stat-score" class="text-2xl font-black text-gold-400 font-mono mt-1">0 Points</p>
+            <div class="bg-dark-900 border border-slate-800 p-4 rounded-xl shadow-lg">
+                <p class="text-xs font-semibold text-slate-400 uppercase">Total Speedup Time</p>
+                <p id="metric-speedups" class="text-2xl font-black text-sky-400 font-mono mt-1">0d 0h</p>
             </div>
-            <div class="bg-dark-900 border border-slate-800 rounded-xl p-4 shadow-lg">
-                <p class="text-xs font-semibold uppercase text-slate-400">Screenshots Verified</p>
-                <p id="stat-screenshots" class="text-2xl font-black text-emerald-400 font-mono mt-1">0</p>
+            <div class="bg-dark-900 border border-slate-800 p-4 rounded-xl shadow-lg">
+                <p class="text-xs font-semibold text-slate-400 uppercase">Active Alliances</p>
+                <p id="metric-alliances" class="text-2xl font-black text-rose-400 mt-1">0</p>
             </div>
         </div>
 
-        <!-- FILTER AND SEARCH -->
-        <div class="bg-dark-900 border border-slate-800 rounded-xl p-4 flex flex-col md:flex-row gap-4 items-center justify-between">
-            <div class="w-full md:w-1/3">
-                <input type="text" id="search-input" onkeyup="renderTable()" placeholder="Search by Player Name..." 
-                    class="w-full bg-dark-950 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-gold-500">
-            </div>
-            <div class="flex items-center gap-2 w-full md:w-auto">
-                <select id="alliance-filter" onchange="renderTable()" class="bg-dark-950 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-100 focus:outline-none">
+        <!-- CONTROLS & FILTERS -->
+        <div class="bg-dark-900 border border-slate-800 p-4 rounded-xl flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-3 w-full md:w-auto">
+                <input type="text" id="search-input" oninput="renderTable()" placeholder="Search player name..." 
+                    class="bg-dark-950 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-gold-500 w-full md:w-64">
+                <select id="filter-alliance" onchange="renderTable()" 
+                    class="bg-dark-950 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-gold-500">
                     <option value="ALL">All Alliances</option>
-                    <option value="BAP">BAP</option>
-                    <option value="ARK">ARK</option>
-                    <option value="REV">REV</option>
-                    <option value="RwE">RwE</option>
-                    <option value="Other">Other</option>
                 </select>
+            </div>
+            <div class="flex items-center gap-2 w-full md:w-auto justify-end">
+                <button onclick="exportCSV()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold py-2 px-3 rounded-lg border border-slate-700 transition">
+                    <i class="fa-solid fa-download mr-1"></i> Export CSV
+                </button>
+                <button onclick="clearAllData()" class="bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/30 text-xs font-semibold py-2 px-3 rounded-lg transition">
+                    <i class="fa-solid fa-trash mr-1"></i> Clear All
+                </button>
             </div>
         </div>
 
         <!-- SUBMISSIONS TABLE -->
-        <div class="bg-dark-900 border border-slate-800 rounded-xl shadow-xl overflow-x-auto">
-            <table class="w-full text-left text-xs text-slate-300">
-                <thead class="bg-dark-950 text-slate-400 uppercase font-semibold border-b border-slate-800">
-                    <tr>
-                        <th class="py-3 px-4">Player</th>
-                        <th class="py-3 px-4">Alliance</th>
-                        <th class="py-3 px-4">D1 Speedups / TG / TTG</th>
-                        <th class="py-3 px-4">D2 Speedups / Dust</th>
-                        <th class="py-3 px-4">D4 Speedups</th>
-                        <th class="py-3 px-4">Total Points</th>
-                        <th class="py-3 px-4">Proof</th>
-                        <th class="py-3 px-4 text-right">Actions</th>
-                    </tr>
-                </thead>
-                <tbody id="submissions-tbody" class="divide-y divide-slate-800">
-                    <!-- Dynamic rows inserted here -->
-                </tbody>
-            </table>
+        <div class="bg-dark-900 border border-slate-800 rounded-xl overflow-hidden shadow-xl">
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-xs text-slate-300">
+                    <thead class="bg-dark-950 border-b border-slate-800 text-slate-400 font-semibold uppercase">
+                        <tr>
+                            <th class="p-3.5">Player</th>
+                            <th class="p-3.5">Alliance</th>
+                            <th class="p-3.5">Day 1 (Construct)</th>
+                            <th class="p-3.5">Day 2 (Research)</th>
+                            <th class="p-3.5">Day 4 (Troops)</th>
+                            <th class="p-3.5 text-right">Total Score</th>
+                            <th class="p-3.5 text-center">Proof</th>
+                            <th class="p-3.5 text-center">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="submissions-tbody" class="divide-y divide-slate-800/60">
+                        <!-- Dynamic Rows -->
+                    </tbody>
+                </table>
+            </div>
+            <div id="empty-state" class="p-8 text-center text-slate-500 hidden">
+                <i class="fa-solid fa-folder-open text-3xl mb-2"></i>
+                <p class="text-sm font-semibold">No submissions found</p>
+            </div>
         </div>
     </main>
 
-    <!-- PROOF MODAL -->
-    <div id="image-modal" class="hidden fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4" onclick="closeModal()">
-        <div class="bg-dark-900 border border-slate-800 p-4 rounded-xl max-w-2xl w-full" onclick="event.stopPropagation()">
-            <div class="flex justify-between items-center mb-3">
-                <h3 class="text-sm font-bold text-slate-200">Backpack Verification Screenshot</h3>
-                <button onclick="closeModal()" class="text-slate-400 hover:text-slate-100">&times;</button>
+    <!-- SCREENSHOT MODAL -->
+    <div id="image-modal" class="fixed inset-0 bg-black/80 z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-dark-900 border border-slate-800 rounded-xl max-w-2xl w-full p-4 space-y-4">
+            <div class="flex justify-between items-center border-b border-slate-800 pb-2">
+                <h3 class="text-sm font-bold text-gold-400">Backpack Verification Screenshot</h3>
+                <button onclick="closeModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
             </div>
-            <img id="modal-img" src="" alt="Backpack Proof" class="w-full h-auto max-h-[70vh] object-contain rounded-lg border border-slate-800">
+            <div class="max-h-[70vh] overflow-auto flex justify-center">
+                <img id="modal-img" src="" alt="Backpack Screenshot" class="rounded-lg max-w-full">
+            </div>
         </div>
     </div>
 
     <script>
-        function getSubmissions() {
-            return JSON.parse(localStorage.getItem('kvk_submissions') || '[]');
+        let submissions = [];
+
+        function loadSubmissions() {
+            submissions = JSON.parse(localStorage.getItem('kvk_submissions') || '[]');
+            populateAllianceFilter();
+            renderMetrics();
+            renderTable();
         }
 
-        function formatMins(totalMins) {
+        function formatMinsToDisplay(totalMins) {
             const days = Math.floor(totalMins / 1440);
             const hours = Math.floor((totalMins % 1440) / 60);
             const mins = totalMins % 60;
+            return `${days}d ${hours}h ${mins}m`;
+        }
+
+        function populateAllianceFilter() {
+            const filterSelect = document.getElementById('filter-alliance');
+            const currentSelection = filterSelect.value;
+            filterSelect.innerHTML = '<option value="ALL">All Alliances</option>';
+
+            const alliances = [...new Set(submissions.map(s => s.alliance))];
+            alliances.forEach(a => {
+                if (a) {
+                    const opt = document.createElement('option');
+                    opt.value = a;
+                    opt.textContent = a;
+                    filterSelect.appendChild(opt);
+                }
+            });
+            filterSelect.value = currentSelection;
+        }
+
+        function renderMetrics() {
+            const count = submissions.length;
+            const totalPoints = submissions.reduce((acc, curr) => acc + (curr.totalPoints || 0), 0);
             
-            let result = [];
-            if (days > 0) result.push(`${days}d`);
-            if (hours > 0) result.push(`${hours}h`);
-            if (mins > 0 || result.length === 0) result.push(`${mins}m`);
-            return result.join(' ');
+            const totalSpeedupMins = submissions.reduce((acc, curr) => {
+                return acc + (curr.day1?.speedupMins || 0) + (curr.day2?.speedupMins || 0) + (curr.day4?.speedupMins || 0);
+            }, 0);
+
+            const uniqueAlliances = new Set(submissions.map(s => s.alliance)).size;
+
+            document.getElementById('metric-count').innerText = count;
+            document.getElementById('metric-points').innerText = totalPoints.toLocaleString();
+            document.getElementById('metric-speedups').innerText = formatMinsToDisplay(totalSpeedupMins);
+            document.getElementById('metric-alliances').innerText = uniqueAlliances;
         }
 
         function renderTable() {
-            const submissions = getSubmissions();
-            const searchVal = document.getElementById('search-input').value.toLowerCase();
-            const allianceFilter = document.getElementById('alliance-filter').value;
             const tbody = document.getElementById('submissions-tbody');
+            const emptyState = document.getElementById('empty-state');
+            const search = document.getElementById('search-input').value.toLowerCase();
+            const allianceFilter = document.getElementById('filter-alliance').value;
 
-            let filtered = submissions.filter(s => {
-                const matchesSearch = s.playerName.toLowerCase().includes(searchVal);
+            tbody.innerHTML = '';
+
+            const filtered = submissions.filter(s => {
+                const matchesSearch = s.playerName.toLowerCase().includes(search);
                 const matchesAlliance = allianceFilter === 'ALL' || s.alliance === allianceFilter;
                 return matchesSearch && matchesAlliance;
             });
 
-            tbody.innerHTML = '';
+            if (filtered.length === 0) {
+                emptyState.classList.remove('hidden');
+                return;
+            } else {
+                emptyState.classList.add('hidden');
+            }
 
-            let totalMins = 0;
-            let totalPoints = 0;
-            let screenshotCount = 0;
-
-            filtered.forEach(sub => {
-                const subMins = sub.day1.speedupMins + sub.day2.speedupMins + sub.day4.speedupMins;
-                totalMins += subMins;
-                totalPoints += sub.totalPoints;
-                if (sub.screenshot) screenshotCount++;
-
+            filtered.forEach(item => {
                 const tr = document.createElement('tr');
-                tr.className = "hover:bg-dark-950/50 transition";
+                tr.className = 'hover:bg-slate-800/40 transition';
+
+                const d1Time = formatMinsToDisplay(item.day1?.speedupMins || 0);
+                const d2Time = formatMinsToDisplay(item.day2?.speedupMins || 0);
+                const d4Time = formatMinsToDisplay(item.day4?.speedupMins || 0);
+
+                const hasScreenshot = Boolean(item.screenshot);
+
                 tr.innerHTML = `
-                    <td class="py-3 px-4 font-bold text-slate-100">${sub.playerName}</td>
-                    <td class="py-3 px-4"><span class="bg-slate-800 px-2 py-1 rounded border border-slate-700 text-[10px] font-mono">${sub.alliance}</span></td>
-                    <td class="py-3 px-4">${formatMins(sub.day1.speedupMins)} <br><span class="text-[10px] text-slate-400">TG: ${sub.day1.trueGold} | TTG: ${sub.day1.temperedTrueGold}</span></td>
-                    <td class="py-3 px-4">${formatMins(sub.day2.speedupMins)} <br><span class="text-[10px] text-slate-400">Dust: ${sub.day2.trueGoldDust}</span></td>
-                    <td class="py-3 px-4">${formatMins(sub.day4.speedupMins)}</td>
-                    <td class="py-3 px-4 font-mono font-bold text-gold-400">${sub.totalPoints.toLocaleString()} pts</td>
-                    <td class="py-3 px-4">
-                        ${sub.screenshot 
-                            ? `<button onclick="openModal('${sub.screenshot}')" class="text-sky-400 hover:text-sky-300 text-xs font-semibold flex items-center gap-1"><i class="fa-solid fa-image"></i> View</button>` 
-                            : `<span class="text-slate-500 italic">None</span>`}
+                    <td class="p-3.5 font-bold text-slate-100">${escapeHtml(item.playerName)}</td>
+                    <td class="p-3.5"><span class="bg-slate-800 px-2 py-0.5 rounded border border-slate-700 text-[11px] font-semibold">${escapeHtml(item.alliance)}</span></td>
+                    <td class="p-3.5">
+                        <div class="font-mono">${d1Time}</div>
+                        <div class="text-[10px] text-slate-400">TG: ${item.day1?.truegold || 0} | Temp: ${item.day1?.temperedTrueGold || 0}</div>
+                        <div class="text-[10px] text-gold-500 font-semibold">${item.day1?.slots?.length || 0} slots selected</div>
                     </td>
-                    <td class="py-3 px-4 text-right">
-                        <button onclick="deleteEntry(${sub.id})" class="text-rose-400 hover:text-rose-300 p-1"><i class="fa-solid fa-trash"></i></button>
+                    <td class="p-3.5">
+                        <div class="font-mono">${d2Time}</div>
+                        <div class="text-[10px] text-slate-400">Dust: ${item.day2?.trueGoldDust || 0}</div>
+                        <div class="text-[10px] text-sky-400 font-semibold">${item.day2?.slots?.length || 0} slots selected</div>
+                    </td>
+                    <td class="p-3.5">
+                        <div class="font-mono">${d4Time}</div>
+                        <div class="text-[10px] text-rose-400 font-semibold">${item.day4?.slots?.length || 0} slots selected</div>
+                    </td>
+                    <td class="p-3.5 text-right font-mono font-bold text-gold-400">${(item.totalPoints || 0).toLocaleString()}</td>
+                    <td class="p-3.5 text-center">
+                        ${hasScreenshot 
+                            ? `<button onclick="viewScreenshot('${item.id}')" class="text-gold-400 hover:text-gold-300 text-xs bg-gold-500/10 p-1.5 rounded-lg border border-gold-500/30"><i class="fa-solid fa-image"></i> View</button>` 
+                            : `<span class="text-slate-600 text-[11px]">None</span>`}
+                    </td>
+                    <td class="p-3.5 text-center">
+                        <button onclick="deleteSubmission(${item.id})" class="text-rose-400 hover:text-rose-300 text-xs p-1.5"><i class="fa-solid fa-trash"></i></button>
                     </td>
                 `;
                 tbody.appendChild(tr);
             });
-
-            document.getElementById('stat-players').innerText = filtered.length;
-            document.getElementById('stat-speedups').innerText = formatMins(totalMins);
-            document.getElementById('stat-score').innerText = `${totalPoints.toLocaleString()} Points`;
-            document.getElementById('stat-screenshots').innerText = screenshotCount;
         }
 
-        function openModal(imgSrc) {
-            document.getElementById('modal-img').src = imgSrc;
-            document.getElementById('image-modal').classList.remove('hidden');
+        function viewScreenshot(id) {
+            const item = submissions.find(s => s.id === Number(id));
+            if (item && item.screenshot) {
+                document.getElementById('modal-img').src = item.screenshot;
+                document.getElementById('image-modal').classList.remove('hidden');
+            }
         }
 
         function closeModal() {
             document.getElementById('image-modal').classList.add('hidden');
+            document.getElementById('modal-img').src = '';
         }
 
-        function deleteEntry(id) {
-            let submissions = getSubmissions();
-            submissions = submissions.filter(s => s.id !== id);
-            localStorage.setItem('kvk_submissions', JSON.stringify(submissions));
-            renderTable();
-        }
-
-        function clearAllData() {
-            if (confirm("Are you sure you want to delete all member submissions?")) {
-                localStorage.removeItem('kvk_submissions');
-                renderTable();
+        function deleteSubmission(id) {
+            if (confirm("Are you sure you want to delete this submission?")) {
+                submissions = submissions.filter(s => s.id !== id);
+                localStorage.setItem('kvk_submissions', JSON.stringify(submissions));
+                loadSubmissions();
             }
         }
 
-        renderTable();
+        function clearAllData() {
+            if (confirm("Are you sure you want to clear ALL player submissions? This cannot be undone.")) {
+                localStorage.removeItem('kvk_submissions');
+                loadSubmissions();
+            }
+        }
+
+        function exportCSV() {
+            if (submissions.length === 0) {
+                alert("No data available to export!");
+                return;
+            }
+
+            let csv = "Player Name,Alliance,Day 1 Speedup (Mins),TrueGold,Tempered TrueGold,Day 2 Speedup (Mins),TrueGold Dust,Day 4 Speedup (Mins),Total Score\n";
+
+            submissions.forEach(s => {
+                csv += `"${s.playerName}","${s.alliance}",${s.day1?.speedupMins || 0},${s.day1?.trueGold || 0},${s.day1?.temperedTrueGold || 0},${s.day2?.speedupMins || 0},${s.day2?.trueGoldDust || 0},${s.day4?.speedupMins || 0},${s.totalPoints || 0}\n`;
+            });
+
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.setAttribute('href', url);
+            a.setAttribute('download', `kvk_submissions_${new Date().toISOString().slice(0,10)}.csv`);
+            a.click();
+        }
+
+        function escapeHtml(str) {
+            return String(str || '').replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+        }
+
+        loadSubmissions();
     </script>
 </body>
 </html>

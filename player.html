@@ -56,22 +56,13 @@
                     </div>
                 </div>
 
-                <!-- TIMEZONE TOGGLE & DEMAND LEGEND -->
+                <!-- TIMEZONE TOGGLE -->
                 <div class="space-y-3">
                     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 bg-dark-950 p-3 rounded-lg border border-slate-800">
                         <span class="text-xs font-bold uppercase text-slate-300">Timezone Display:</span>
                         <div class="flex bg-dark-900 p-1 rounded-lg border border-slate-700 text-xs">
                             <button type="button" id="tz-utc" onclick="setTimezone('UTC')" class="px-3 py-1 rounded-md font-semibold bg-gold-500 text-dark-950 transition">🌐 UTC</button>
                             <button type="button" id="tz-local" onclick="setTimezone('Local')" class="px-3 py-1 rounded-md font-semibold text-slate-400 hover:text-slate-200 transition">🕒 Local Time</button>
-                        </div>
-                    </div>
-
-                    <div class="flex items-center justify-between text-[11px] bg-dark-950 p-2.5 rounded-lg border border-slate-800 text-slate-300">
-                        <span class="font-bold">Slot Demand:</span>
-                        <div class="flex gap-3">
-                            <span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-emerald-500"></span> Low (0-10)</span>
-                            <span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-amber-500"></span> Moderate (11-20)</span>
-                            <span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-rose-500"></span> High (21+)</span>
                         </div>
                     </div>
                 </div>
@@ -110,20 +101,20 @@
                     <i class="fa-solid fa-hammer text-gold-500"></i> Day 1: Construction
                 </h2>
                 
-                <div class="bg-dark-950 p-3.5 rounded-lg border border-slate-800 space-y-2">
-                    <label class="block text-xs font-semibold text-slate-300 uppercase">Speedups</label>
+                <div class="bg-dark-950 p-4 rounded-xl border border-slate-800">
+                    <span class="block text-xs font-bold text-gold-400 uppercase mb-3">⚡ Enter Speedups</span>
                     <div class="grid grid-cols-3 gap-3">
-                        <div>
-                            <label class="block text-[11px] text-slate-400 uppercase mb-1">Days</label>
-                            <input type="number" id="d1-days" min="0" value="0" oninput="calculateLivePoints()" class="w-full bg-dark-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-100 focus:outline-none focus:border-gold-500">
+                        <div class="bg-dark-900 p-2.5 rounded-lg border border-slate-700/60">
+                            <label class="block text-[11px] font-bold text-slate-300 uppercase mb-1">Days</label>
+                            <input type="number" id="d1-days" min="0" value="0" placeholder="0" oninput="calculateLivePoints()" class="w-full bg-dark-950 border border-slate-700 rounded-md px-3 py-2 text-base font-bold text-gold-400 focus:outline-none focus:border-gold-500">
                         </div>
-                        <div>
-                            <label class="block text-[11px] text-slate-400 uppercase mb-1">Hours</label>
-                            <input type="number" id="d1-hours" min="0" value="0" oninput="calculateLivePoints()" class="w-full bg-dark-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-100 focus:outline-none focus:border-gold-500">
+                        <div class="bg-dark-900 p-2.5 rounded-lg border border-slate-700/60">
+                            <label class="block text-[11px] font-bold text-slate-300 uppercase mb-1">Hours</label>
+                            <input type="number" id="d1-hours" min="0" value="0" placeholder="0" oninput="calculateLivePoints()" class="w-full bg-dark-950 border border-slate-700 rounded-md px-3 py-2 text-base font-bold text-gold-400 focus:outline-none focus:border-gold-500">
                         </div>
-                        <div>
-                            <label class="block text-[11px] text-slate-400 uppercase mb-1">Minutes</label>
-                            <input type="number" id="d1-mins" min="0" value="0" oninput="calculateLivePoints()" class="w-full bg-dark-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-100 focus:outline-none focus:border-gold-500">
+                        <div class="bg-dark-900 p-2.5 rounded-lg border border-slate-700/60">
+                            <label class="block text-[11px] font-bold text-slate-300 uppercase mb-1">Minutes</label>
+                            <input type="number" id="d1-mins" min="0" value="0" placeholder="0" oninput="calculateLivePoints()" class="w-full bg-dark-950 border border-slate-700 rounded-md px-3 py-2 text-base font-bold text-gold-400 focus:outline-none focus:border-gold-500">
                         </div>
                     </div>
                 </div>
@@ -151,20 +142,20 @@
                     <i class="fa-solid fa-flask text-sky-400"></i> Day 2: Research
                 </h2>
 
-                <div class="bg-dark-950 p-3.5 rounded-lg border border-slate-800 space-y-2">
-                    <label class="block text-xs font-semibold text-slate-300 uppercase">Speedups</label>
+                <div class="bg-dark-950 p-4 rounded-xl border border-slate-800">
+                    <span class="block text-xs font-bold text-sky-400 uppercase mb-3">⚡ Enter Speedups</span>
                     <div class="grid grid-cols-3 gap-3">
-                        <div>
-                            <label class="block text-[11px] text-slate-400 uppercase mb-1">Days</label>
-                            <input type="number" id="d2-days" min="0" value="0" oninput="calculateLivePoints()" class="w-full bg-dark-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-100 focus:outline-none focus:border-gold-500">
+                        <div class="bg-dark-900 p-2.5 rounded-lg border border-slate-700/60">
+                            <label class="block text-[11px] font-bold text-slate-300 uppercase mb-1">Days</label>
+                            <input type="number" id="d2-days" min="0" value="0" placeholder="0" oninput="calculateLivePoints()" class="w-full bg-dark-950 border border-slate-700 rounded-md px-3 py-2 text-base font-bold text-sky-400 focus:outline-none focus:border-sky-500">
                         </div>
-                        <div>
-                            <label class="block text-[11px] text-slate-400 uppercase mb-1">Hours</label>
-                            <input type="number" id="d2-hours" min="0" value="0" oninput="calculateLivePoints()" class="w-full bg-dark-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-100 focus:outline-none focus:border-gold-500">
+                        <div class="bg-dark-900 p-2.5 rounded-lg border border-slate-700/60">
+                            <label class="block text-[11px] font-bold text-slate-300 uppercase mb-1">Hours</label>
+                            <input type="number" id="d2-hours" min="0" value="0" placeholder="0" oninput="calculateLivePoints()" class="w-full bg-dark-950 border border-slate-700 rounded-md px-3 py-2 text-base font-bold text-sky-400 focus:outline-none focus:border-sky-500">
                         </div>
-                        <div>
-                            <label class="block text-[11px] text-slate-400 uppercase mb-1">Minutes</label>
-                            <input type="number" id="d2-mins" min="0" value="0" oninput="calculateLivePoints()" class="w-full bg-dark-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-100 focus:outline-none focus:border-gold-500">
+                        <div class="bg-dark-900 p-2.5 rounded-lg border border-slate-700/60">
+                            <label class="block text-[11px] font-bold text-slate-300 uppercase mb-1">Minutes</label>
+                            <input type="number" id="d2-mins" min="0" value="0" placeholder="0" oninput="calculateLivePoints()" class="w-full bg-dark-950 border border-slate-700 rounded-md px-3 py-2 text-base font-bold text-sky-400 focus:outline-none focus:border-sky-500">
                         </div>
                     </div>
                 </div>
@@ -186,20 +177,20 @@
                     <i class="fa-solid fa-shield-halved text-rose-400"></i> Day 4: Troop Training
                 </h2>
 
-                <div class="bg-dark-950 p-3.5 rounded-lg border border-slate-800 space-y-2">
-                    <label class="block text-xs font-semibold text-slate-300 uppercase">Speedups</label>
+                <div class="bg-dark-950 p-4 rounded-xl border border-slate-800">
+                    <span class="block text-xs font-bold text-rose-400 uppercase mb-3">⚡ Enter Speedups</span>
                     <div class="grid grid-cols-3 gap-3">
-                        <div>
-                            <label class="block text-[11px] text-slate-400 uppercase mb-1">Days</label>
-                            <input type="number" id="d4-days" min="0" value="0" oninput="calculateLivePoints()" class="w-full bg-dark-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-100 focus:outline-none focus:border-gold-500">
+                        <div class="bg-dark-900 p-2.5 rounded-lg border border-slate-700/60">
+                            <label class="block text-[11px] font-bold text-slate-300 uppercase mb-1">Days</label>
+                            <input type="number" id="d4-days" min="0" value="0" placeholder="0" oninput="calculateLivePoints()" class="w-full bg-dark-950 border border-slate-700 rounded-md px-3 py-2 text-base font-bold text-rose-400 focus:outline-none focus:border-rose-500">
                         </div>
-                        <div>
-                            <label class="block text-[11px] text-slate-400 uppercase mb-1">Hours</label>
-                            <input type="number" id="d4-hours" min="0" value="0" oninput="calculateLivePoints()" class="w-full bg-dark-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-100 focus:outline-none focus:border-gold-500">
+                        <div class="bg-dark-900 p-2.5 rounded-lg border border-slate-700/60">
+                            <label class="block text-[11px] font-bold text-slate-300 uppercase mb-1">Hours</label>
+                            <input type="number" id="d4-hours" min="0" value="0" placeholder="0" oninput="calculateLivePoints()" class="w-full bg-dark-950 border border-slate-700 rounded-md px-3 py-2 text-base font-bold text-rose-400 focus:outline-none focus:border-rose-500">
                         </div>
-                        <div>
-                            <label class="block text-[11px] text-slate-400 uppercase mb-1">Minutes</label>
-                            <input type="number" id="d4-mins" min="0" value="0" oninput="calculateLivePoints()" class="w-full bg-dark-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-100 focus:outline-none focus:border-gold-500">
+                        <div class="bg-dark-900 p-2.5 rounded-lg border border-slate-700/60">
+                            <label class="block text-[11px] font-bold text-slate-300 uppercase mb-1">Minutes</label>
+                            <input type="number" id="d4-mins" min="0" value="0" placeholder="0" oninput="calculateLivePoints()" class="w-full bg-dark-950 border border-slate-700 rounded-md px-3 py-2 text-base font-bold text-rose-400 focus:outline-none focus:border-rose-500">
                         </div>
                     </div>
                 </div>
