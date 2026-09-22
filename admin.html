@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KvK Admin Dashboard</title>
+    <title>KingShot KvK Admin Portal</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script>
@@ -20,271 +20,237 @@
     </script>
 </head>
 <body class="bg-dark-950 text-slate-100 min-h-screen flex flex-col font-sans">
-    <header class="bg-dark-900 border-b border-slate-800 sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
-            <div class="flex items-center space-x-3">
-                <div class="bg-gold-500/10 p-2 rounded-lg border border-gold-500/30">
-                    <i class="fa-solid fa-user-shield text-gold-500 text-xl"></i>
-                </div>
-                <div>
-                    <h1 class="text-lg font-bold uppercase text-gold-400">KvK Admin Dashboard</h1>
-                    <p class="text-xs text-slate-400">Alliance & Submission Overview</p>
-                </div>
-            </div>
-            <a href="player.html" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold py-1.5 px-3 rounded-lg border border-slate-700 transition">
-                <i class="fa-solid fa-gamepad mr-1"></i> Player Portal
-            </a>
-        </div>
-    </header>
 
-    <main class="flex-grow max-w-7xl mx-auto w-full px-4 py-6 space-y-6">
-        
-        <!-- SUMMARY METRICS -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
-            <div class="bg-dark-900 border border-slate-800 p-4 rounded-xl shadow-lg">
-                <p class="text-xs font-semibold text-slate-400 uppercase">Total Submissions</p>
-                <p id="metric-count" class="text-2xl font-black text-slate-100 mt-1">0</p>
+    <!-- PIN SECURITY MODAL -->
+    <div id="pin-modal" class="fixed inset-0 bg-dark-950/90 backdrop-blur-md z-50 flex items-center justify-center p-4">
+        <div class="bg-dark-900 border border-slate-800 rounded-2xl p-6 max-w-sm w-full shadow-2xl text-center space-y-4">
+            <div class="w-12 h-12 bg-gold-500/10 border border-gold-500/30 rounded-full flex items-center justify-center mx-auto text-gold-400">
+                <i class="fa-solid fa-lock text-xl"></i>
             </div>
-            <div class="bg-dark-900 border border-slate-800 p-4 rounded-xl shadow-lg">
-                <p class="text-xs font-semibold text-slate-400 uppercase">Total Calculated Score</p>
-                <p id="metric-points" class="text-2xl font-black text-gold-400 font-mono mt-1">0</p>
+            <div>
+                <h2 class="text-lg font-bold text-slate-100 uppercase">Admin Access Locked</h2>
+                <p class="text-xs text-slate-400 mt-1">Enter PIN to access the KvK Dashboard</p>
             </div>
-            <div class="bg-dark-900 border border-slate-800 p-4 rounded-xl shadow-lg">
-                <p class="text-xs font-semibold text-slate-400 uppercase">Total Speedup Time</p>
-                <p id="metric-speedups" class="text-2xl font-black text-sky-400 font-mono mt-1">0d 0h</p>
+            <div>
+                <input type="password" id="pin-input" maxlength="4" placeholder="••••" autofocus
+                    onkeydown="if(event.key === 'Enter') verifyPin()"
+                    class="w-full text-center bg-dark-950 border border-slate-700 rounded-xl py-3 text-2xl font-mono tracking-[0.5em] text-gold-400 focus:outline-none focus:border-gold-500">
+                <p id="pin-error" class="text-xs text-rose-500 mt-2 hidden">Incorrect PIN. Please try again.</p>
             </div>
-            <div class="bg-dark-900 border border-slate-800 p-4 rounded-xl shadow-lg">
-                <p class="text-xs font-semibold text-slate-400 uppercase">Active Alliances</p>
-                <p id="metric-alliances" class="text-2xl font-black text-rose-400 mt-1">0</p>
-            </div>
-        </div>
-
-        <!-- CONTROLS & FILTERS -->
-        <div class="bg-dark-900 border border-slate-800 p-4 rounded-xl flex flex-col md:flex-row justify-between items-center gap-4">
-            <div class="flex items-center gap-3 w-full md:w-auto">
-                <input type="text" id="search-input" oninput="renderTable()" placeholder="Search player name..." 
-                    class="bg-dark-950 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-gold-500 w-full md:w-64">
-                <select id="filter-alliance" onchange="renderTable()" 
-                    class="bg-dark-950 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-gold-500">
-                    <option value="ALL">All Alliances</option>
-                </select>
-            </div>
-            <div class="flex items-center gap-2 w-full md:w-auto justify-end">
-                <button onclick="exportCSV()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold py-2 px-3 rounded-lg border border-slate-700 transition">
-                    <i class="fa-solid fa-download mr-1"></i> Export CSV
-                </button>
-                <button onclick="clearAllData()" class="bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/30 text-xs font-semibold py-2 px-3 rounded-lg transition">
-                    <i class="fa-solid fa-trash mr-1"></i> Clear All
-                </button>
-            </div>
-        </div>
-
-        <!-- SUBMISSIONS TABLE -->
-        <div class="bg-dark-900 border border-slate-800 rounded-xl overflow-hidden shadow-xl">
-            <div class="overflow-x-auto">
-                <table class="w-full text-left text-xs text-slate-300">
-                    <thead class="bg-dark-950 border-b border-slate-800 text-slate-400 font-semibold uppercase">
-                        <tr>
-                            <th class="p-3.5">Player</th>
-                            <th class="p-3.5">Alliance</th>
-                            <th class="p-3.5">Day 1 (Construct)</th>
-                            <th class="p-3.5">Day 2 (Research)</th>
-                            <th class="p-3.5">Day 4 (Troops)</th>
-                            <th class="p-3.5 text-right">Total Score</th>
-                            <th class="p-3.5 text-center">Proof</th>
-                            <th class="p-3.5 text-center">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody id="submissions-tbody" class="divide-y divide-slate-800/60">
-                        <!-- Dynamic Rows -->
-                    </tbody>
-                </table>
-            </div>
-            <div id="empty-state" class="p-8 text-center text-slate-500 hidden">
-                <i class="fa-solid fa-folder-open text-3xl mb-2"></i>
-                <p class="text-sm font-semibold">No submissions found</p>
-            </div>
-        </div>
-    </main>
-
-    <!-- SCREENSHOT MODAL -->
-    <div id="image-modal" class="fixed inset-0 bg-black/80 z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-dark-900 border border-slate-800 rounded-xl max-w-2xl w-full p-4 space-y-4">
-            <div class="flex justify-between items-center border-b border-slate-800 pb-2">
-                <h3 class="text-sm font-bold text-gold-400">Backpack Verification Screenshot</h3>
-                <button onclick="closeModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
-            </div>
-            <div class="max-h-[70vh] overflow-auto flex justify-center">
-                <img id="modal-img" src="" alt="Backpack Screenshot" class="rounded-lg max-w-full">
-            </div>
+            <button onclick="verifyPin()" class="w-full bg-gold-500 hover:bg-gold-400 text-dark-950 font-bold py-2.5 rounded-xl transition text-sm">
+                Unlock Dashboard
+            </button>
         </div>
     </div>
 
-    <script>
-        let submissions = [];
+    <!-- MAIN ADMIN CONTENT (Hidden by default) -->
+    <div id="admin-content" class="hidden flex-col min-h-screen">
+        <header class="bg-dark-900 border-b border-slate-800 sticky top-0 z-40">
+            <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
+                <div class="flex items-center space-x-3">
+                    <div class="bg-gold-500/10 p-2 rounded-lg border border-gold-500/30">
+                        <i class="fa-solid fa-user-shield text-gold-500 text-xl"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-lg font-bold uppercase text-gold-400">KvK Admin Portal</h1>
+                        <p class="text-xs text-slate-400">Submission & Schedule Management</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-2">
+                    <a href="player.html" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold py-1.5 px-3 rounded-lg border border-slate-700 transition">
+                        <i class="fa-solid fa-user-plus mr-1"></i> Player Form
+                    </a>
+                    <button onclick="lockAdmin()" class="text-xs bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 font-semibold py-1.5 px-3 rounded-lg border border-rose-500/30 transition">
+                        <i class="fa-solid fa-lock mr-1"></i> Lock
+                    </button>
+                </div>
+            </div>
+        </header>
 
-        function loadSubmissions() {
-            submissions = JSON.parse(localStorage.getItem('kvk_submissions') || '[]');
-            populateAllianceFilter();
-            renderMetrics();
-            renderTable();
-        }
-
-        function formatMinsToDisplay(totalMins) {
-            const days = Math.floor(totalMins / 1440);
-            const hours = Math.floor((totalMins % 1440) / 60);
-            const mins = totalMins % 60;
-            return `${days}d ${hours}h ${mins}m`;
-        }
-
-        function populateAllianceFilter() {
-            const filterSelect = document.getElementById('filter-alliance');
-            const currentSelection = filterSelect.value;
-            filterSelect.innerHTML = '<option value="ALL">All Alliances</option>';
-
-            const alliances = [...new Set(submissions.map(s => s.alliance))];
-            alliances.forEach(a => {
-                if (a) {
-                    const opt = document.createElement('option');
-                    opt.value = a;
-                    opt.textContent = a;
-                    filterSelect.appendChild(opt);
-                }
-            });
-            filterSelect.value = currentSelection;
-        }
-
-        function renderMetrics() {
-            const count = submissions.length;
-            const totalPoints = submissions.reduce((acc, curr) => acc + (curr.totalPoints || 0), 0);
+        <main class="flex-grow max-w-6xl mx-auto w-full px-4 py-6 space-y-6">
             
-            const totalSpeedupMins = submissions.reduce((acc, curr) => {
-                return acc + (curr.day1?.speedupMins || 0) + (curr.day2?.speedupMins || 0) + (curr.day4?.speedupMins || 0);
-            }, 0);
+            <!-- OVERVIEW STATS -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div class="bg-dark-900 border border-slate-800 rounded-xl p-4 flex items-center gap-4">
+                    <div class="p-3 bg-gold-500/10 border border-gold-500/30 rounded-lg text-gold-400">
+                        <i class="fa-solid fa-users text-xl"></i>
+                    </div>
+                    <div>
+                        <p class="text-xs font-semibold uppercase text-slate-400">Total Players</p>
+                        <p id="stat-total-players" class="text-xl font-bold font-mono text-slate-100">0</p>
+                    </div>
+                </div>
+                <div class="bg-dark-900 border border-slate-800 rounded-xl p-4 flex items-center gap-4">
+                    <div class="p-3 bg-amber-500/10 border border-amber-500/30 rounded-lg text-amber-400">
+                        <i class="fa-solid fa-trophy text-xl"></i>
+                    </div>
+                    <div>
+                        <p class="text-xs font-semibold uppercase text-slate-400">Total Points Prep</p>
+                        <p id="stat-total-points" class="text-xl font-bold font-mono text-gold-400">0</p>
+                    </div>
+                </div>
+                <div class="bg-dark-900 border border-slate-800 rounded-xl p-4 flex items-center gap-4">
+                    <div class="p-3 bg-sky-500/10 border border-sky-500/30 rounded-lg text-sky-400">
+                        <i class="fa-solid fa-shield text-xl"></i>
+                    </div>
+                    <div>
+                        <p class="text-xs font-semibold uppercase text-slate-400">Alliances Represented</p>
+                        <p id="stat-total-alliances" class="text-xl font-bold font-mono text-slate-100">0</p>
+                    </div>
+                </div>
+            </div>
 
-            const uniqueAlliances = new Set(submissions.map(s => s.alliance)).size;
+            <!-- TABLE OF SUBMISSIONS -->
+            <div class="bg-dark-900 border border-slate-800 rounded-xl shadow-xl overflow-hidden">
+                <div class="p-4 border-b border-slate-800 flex justify-between items-center flex-wrap gap-3">
+                    <h2 class="text-sm font-bold uppercase text-slate-200 flex items-center gap-2">
+                        <i class="fa-solid fa-list text-gold-500"></i> Player Submissions
+                    </h2>
+                    <div class="flex items-center gap-2">
+                        <button onclick="exportData()" class="text-xs bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 font-semibold py-1.5 px-3 rounded-lg transition">
+                            <i class="fa-solid fa-file-export mr-1"></i> Export JSON
+                        </button>
+                        <button onclick="clearAllData()" class="text-xs bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/30 font-semibold py-1.5 px-3 rounded-lg transition">
+                            <i class="fa-solid fa-trash mr-1"></i> Clear Data
+                        </button>
+                    </div>
+                </div>
 
-            document.getElementById('metric-count').innerText = count;
-            document.getElementById('metric-points').innerText = totalPoints.toLocaleString();
-            document.getElementById('metric-speedups').innerText = formatMinsToDisplay(totalSpeedupMins);
-            document.getElementById('metric-alliances').innerText = uniqueAlliances;
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-xs text-slate-300">
+                        <thead class="bg-dark-950 text-slate-400 uppercase text-[10px] border-b border-slate-800">
+                            <tr>
+                                <th class="px-4 py-3">Player Name</th>
+                                <th class="px-4 py-3">Alliance</th>
+                                <th class="px-4 py-3">General Speedups</th>
+                                <th class="px-4 py-3">D1 Speedups</th>
+                                <th class="px-4 py-3">D2 Speedups</th>
+                                <th class="px-4 py-3">D4 Speedups</th>
+                                <th class="px-4 py-3">Total Score</th>
+                                <th class="px-4 py-3 text-right">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="admin-table-body" class="divide-y divide-slate-800/60">
+                            <!-- JS Inject -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        const ADMIN_PIN = "2106";
+
+        function checkAuth() {
+            if (sessionStorage.getItem('kvk_admin_auth') === 'true') {
+                document.getElementById('pin-modal').classList.add('hidden');
+                document.getElementById('admin-content').classList.remove('hidden');
+                document.getElementById('admin-content').classList.add('flex');
+                loadDashboardData();
+            }
         }
 
-        function renderTable() {
-            const tbody = document.getElementById('submissions-tbody');
-            const emptyState = document.getElementById('empty-state');
-            const search = document.getElementById('search-input').value.toLowerCase();
-            const allianceFilter = document.getElementById('filter-alliance').value;
+        function verifyPin() {
+            const input = document.getElementById('pin-input').value;
+            const errorMsg = document.getElementById('pin-error');
+            
+            if (input === ADMIN_PIN) {
+                sessionStorage.setItem('kvk_admin_auth', 'true');
+                errorMsg.classList.add('hidden');
+                checkAuth();
+            } else {
+                errorMsg.classList.remove('hidden');
+                document.getElementById('pin-input').value = '';
+                document.getElementById('pin-input').focus();
+            }
+        }
 
+        function lockAdmin() {
+            sessionStorage.removeItem('kvk_admin_auth');
+            location.reload();
+        }
+
+        function formatMins(mins) {
+            if (!mins) return '0m';
+            const d = Math.floor(mins / 1440);
+            const h = Math.floor((mins % 1440) / 60);
+            const m = mins % 60;
+            let res = [];
+            if (d > 0) res.push(`${d}d`);
+            if (h > 0) res.push(`${h}h`);
+            if (m > 0 || res.length === 0) res.push(`${m}m`);
+            return res.join(' ');
+        }
+
+        function loadDashboardData() {
+            const entries = JSON.parse(localStorage.getItem('kvk_submissions') || '[]');
+            const tbody = document.getElementById('admin-table-body');
             tbody.innerHTML = '';
 
-            const filtered = submissions.filter(s => {
-                const matchesSearch = s.playerName.toLowerCase().includes(search);
-                const matchesAlliance = allianceFilter === 'ALL' || s.alliance === allianceFilter;
-                return matchesSearch && matchesAlliance;
-            });
+            let totalPointsSum = 0;
+            const alliances = new Set();
 
-            if (filtered.length === 0) {
-                emptyState.classList.remove('hidden');
-                return;
+            if (entries.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="8" class="text-center py-6 text-slate-500 italic">No submissions found yet.</td></tr>`;
             } else {
-                emptyState.classList.add('hidden');
+                entries.forEach((item, index) => {
+                    totalPointsSum += item.totalPoints || 0;
+                    if (item.alliance) alliances.add(item.alliance);
+
+                    const tr = document.createElement('tr');
+                    tr.className = 'hover:bg-slate-800/30 transition';
+                    tr.innerHTML = `
+                        <td class="px-4 py-3 font-bold text-slate-100">${item.playerName}</td>
+                        <td class="px-4 py-3"><span class="bg-slate-800 text-gold-400 font-semibold px-2 py-0.5 rounded border border-slate-700">${item.alliance}</span></td>
+                        <td class="px-4 py-3 text-gold-400 font-mono">${formatMins(item.generalSpeedupMins)}</td>
+                        <td class="px-4 py-3 text-slate-300 font-mono">${formatMins(item.day1?.speedupMins)}</td>
+                        <td class="px-4 py-3 text-slate-300 font-mono">${formatMins(item.day2?.speedupMins)}</td>
+                        <td class="px-4 py-3 text-slate-300 font-mono">${formatMins(item.day4?.speedupMins)}</td>
+                        <td class="px-4 py-3 font-bold text-gold-400 font-mono">${(item.totalPoints || 0).toLocaleString()}</td>
+                        <td class="px-4 py-3 text-right">
+                            <button onclick="deleteEntry(${index})" class="text-rose-400 hover:text-rose-300 p-1">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </td>
+                    `;
+                    tbody.appendChild(tr);
+                });
             }
 
-            filtered.forEach(item => {
-                const tr = document.createElement('tr');
-                tr.className = 'hover:bg-slate-800/40 transition';
-
-                const d1Time = formatMinsToDisplay(item.day1?.speedupMins || 0);
-                const d2Time = formatMinsToDisplay(item.day2?.speedupMins || 0);
-                const d4Time = formatMinsToDisplay(item.day4?.speedupMins || 0);
-
-                const hasScreenshot = Boolean(item.screenshot);
-
-                tr.innerHTML = `
-                    <td class="p-3.5 font-bold text-slate-100">${escapeHtml(item.playerName)}</td>
-                    <td class="p-3.5"><span class="bg-slate-800 px-2 py-0.5 rounded border border-slate-700 text-[11px] font-semibold">${escapeHtml(item.alliance)}</span></td>
-                    <td class="p-3.5">
-                        <div class="font-mono">${d1Time}</div>
-                        <div class="text-[10px] text-slate-400">TG: ${item.day1?.truegold || 0} | Temp: ${item.day1?.temperedTrueGold || 0}</div>
-                        <div class="text-[10px] text-gold-500 font-semibold">${item.day1?.slots?.length || 0} slots selected</div>
-                    </td>
-                    <td class="p-3.5">
-                        <div class="font-mono">${d2Time}</div>
-                        <div class="text-[10px] text-slate-400">Dust: ${item.day2?.trueGoldDust || 0}</div>
-                        <div class="text-[10px] text-sky-400 font-semibold">${item.day2?.slots?.length || 0} slots selected</div>
-                    </td>
-                    <td class="p-3.5">
-                        <div class="font-mono">${d4Time}</div>
-                        <div class="text-[10px] text-rose-400 font-semibold">${item.day4?.slots?.length || 0} slots selected</div>
-                    </td>
-                    <td class="p-3.5 text-right font-mono font-bold text-gold-400">${(item.totalPoints || 0).toLocaleString()}</td>
-                    <td class="p-3.5 text-center">
-                        ${hasScreenshot 
-                            ? `<button onclick="viewScreenshot('${item.id}')" class="text-gold-400 hover:text-gold-300 text-xs bg-gold-500/10 p-1.5 rounded-lg border border-gold-500/30"><i class="fa-solid fa-image"></i> View</button>` 
-                            : `<span class="text-slate-600 text-[11px]">None</span>`}
-                    </td>
-                    <td class="p-3.5 text-center">
-                        <button onclick="deleteSubmission(${item.id})" class="text-rose-400 hover:text-rose-300 text-xs p-1.5"><i class="fa-solid fa-trash"></i></button>
-                    </td>
-                `;
-                tbody.appendChild(tr);
-            });
+            document.getElementById('stat-total-players').innerText = entries.length;
+            document.getElementById('stat-total-points').innerText = totalPointsSum.toLocaleString();
+            document.getElementById('stat-total-alliances').innerText = alliances.size;
         }
 
-        function viewScreenshot(id) {
-            const item = submissions.find(s => s.id === Number(id));
-            if (item && item.screenshot) {
-                document.getElementById('modal-img').src = item.screenshot;
-                document.getElementById('image-modal').classList.remove('hidden');
-            }
-        }
-
-        function closeModal() {
-            document.getElementById('image-modal').classList.add('hidden');
-            document.getElementById('modal-img').src = '';
-        }
-
-        function deleteSubmission(id) {
-            if (confirm("Are you sure you want to delete this submission?")) {
-                submissions = submissions.filter(s => s.id !== id);
-                localStorage.setItem('kvk_submissions', JSON.stringify(submissions));
-                loadSubmissions();
+        function deleteEntry(index) {
+            if (confirm('Are you sure you want to delete this submission?')) {
+                const entries = JSON.parse(localStorage.getItem('kvk_submissions') || '[]');
+                entries.splice(index, 1);
+                localStorage.setItem('kvk_submissions', JSON.stringify(entries));
+                loadDashboardData();
             }
         }
 
         function clearAllData() {
-            if (confirm("Are you sure you want to clear ALL player submissions? This cannot be undone.")) {
+            if (confirm('Are you sure you want to delete ALL player entries? This cannot be undone.')) {
                 localStorage.removeItem('kvk_submissions');
-                loadSubmissions();
+                loadDashboardData();
             }
         }
 
-        function exportCSV() {
-            if (submissions.length === 0) {
-                alert("No data available to export!");
-                return;
-            }
-
-            let csv = "Player Name,Alliance,Day 1 Speedup (Mins),TrueGold,Tempered TrueGold,Day 2 Speedup (Mins),TrueGold Dust,Day 4 Speedup (Mins),Total Score\n";
-
-            submissions.forEach(s => {
-                csv += `"${s.playerName}","${s.alliance}",${s.day1?.speedupMins || 0},${s.day1?.trueGold || 0},${s.day1?.temperedTrueGold || 0},${s.day2?.speedupMins || 0},${s.day2?.trueGoldDust || 0},${s.day4?.speedupMins || 0},${s.totalPoints || 0}\n`;
-            });
-
-            const blob = new Blob([csv], { type: 'text/csv' });
-            const url = window.URL.createObjectURL(blob);
+        function exportData() {
+            const entries = localStorage.getItem('kvk_submissions') || '[]';
+            const blob = new Blob([entries], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
-            a.setAttribute('href', url);
-            a.setAttribute('download', `kvk_submissions_${new Date().toISOString().slice(0,10)}.csv`);
+            a.href = url;
+            a.download = `kvk_prep_data_${new Date().toISOString().split('T')[0]}.json`;
             a.click();
         }
 
-        function escapeHtml(str) {
-            return String(str || '').replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
-        }
-
-        loadSubmissions();
+        // Run security check on load
+        checkAuth();
     </script>
 </body>
 </html>
