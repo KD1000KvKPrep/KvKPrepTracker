@@ -109,22 +109,26 @@
                 <h2 class="text-base font-bold text-gold-400 flex items-center gap-2">
                     <i class="fa-solid fa-hammer text-gold-500"></i> Day 1: Construction
                 </h2>
-                <p class="text-xs text-slate-400">Enter resources and select all feasible time slots.</p>
-
-                <div>
-                    <label class="block text-xs font-semibold text-slate-300 uppercase mb-2">Speedups Unit</label>
-                    <div class="grid grid-cols-3 gap-2 bg-dark-950 p-1.5 rounded-lg border border-slate-800">
-                        <button type="button" id="d1-unit-days" onclick="setSectionUnit('d1', 'Days')" class="py-1.5 text-xs font-bold rounded-md text-slate-400">Days</button>
-                        <button type="button" id="d1-unit-hours" onclick="setSectionUnit('d1', 'Hours')" class="py-1.5 text-xs font-bold rounded-md text-slate-400">Hours</button>
-                        <button type="button" id="d1-unit-mins" onclick="setSectionUnit('d1', 'Minutes')" class="py-1.5 text-xs font-bold rounded-md bg-gold-500 text-dark-950">Minutes</button>
+                
+                <div class="bg-dark-950 p-3 rounded-lg border border-slate-800 space-y-2">
+                    <label class="block text-xs font-semibold text-slate-300 uppercase">Speedups</label>
+                    <div class="grid grid-cols-3 gap-2">
+                        <div>
+                            <label class="block text-[10px] text-slate-400 uppercase mb-1">Days</label>
+                            <input type="number" id="d1-days" min="0" value="0" oninput="calculateLivePoints()" class="w-full bg-dark-900 border border-slate-700 rounded-lg px-3 py-1.5 text-sm text-slate-100">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] text-slate-400 uppercase mb-1">Hours</label>
+                            <input type="number" id="d1-hours" min="0" value="0" oninput="calculateLivePoints()" class="w-full bg-dark-900 border border-slate-700 rounded-lg px-3 py-1.5 text-sm text-slate-100">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] text-slate-400 uppercase mb-1">Minutes</label>
+                            <input type="number" id="d1-mins" min="0" value="0" oninput="calculateLivePoints()" class="w-full bg-dark-900 border border-slate-700 rounded-lg px-3 py-1.5 text-sm text-slate-100">
+                        </div>
                     </div>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-                    <div>
-                        <label id="d1-val-label" class="block text-[11px] font-semibold text-slate-400 uppercase mb-1">Minutes</label>
-                        <input type="number" id="d1-speedups" min="0" value="0" oninput="calculateLivePoints()" class="w-full bg-dark-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-100">
-                    </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
                     <div>
                         <label class="block text-[11px] font-semibold text-slate-400 uppercase mb-1">TrueGold (2k pts/ea)</label>
                         <input type="number" id="d1-truegold" min="0" value="0" oninput="calculateLivePoints()" class="w-full bg-dark-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-100">
@@ -146,26 +150,28 @@
                 <h2 class="text-base font-bold text-sky-400 flex items-center gap-2">
                     <i class="fa-solid fa-flask text-sky-400"></i> Day 2: Research
                 </h2>
-                <p class="text-xs text-slate-400">Enter resources and select all feasible time slots.</p>
 
-                <div>
-                    <label class="block text-xs font-semibold text-slate-300 uppercase mb-2">Speedups Unit</label>
-                    <div class="grid grid-cols-3 gap-2 bg-dark-950 p-1.5 rounded-lg border border-slate-800">
-                        <button type="button" id="d2-unit-days" onclick="setSectionUnit('d2', 'Days')" class="py-1.5 text-xs font-bold rounded-md text-slate-400">Days</button>
-                        <button type="button" id="d2-unit-hours" onclick="setSectionUnit('d2', 'Hours')" class="py-1.5 text-xs font-bold rounded-md text-slate-400">Hours</button>
-                        <button type="button" id="d2-unit-mins" onclick="setSectionUnit('d2', 'Minutes')" class="py-1.5 text-xs font-bold rounded-md bg-gold-500 text-dark-950">Minutes</button>
+                <div class="bg-dark-950 p-3 rounded-lg border border-slate-800 space-y-2">
+                    <label class="block text-xs font-semibold text-slate-300 uppercase">Speedups</label>
+                    <div class="grid grid-cols-3 gap-2">
+                        <div>
+                            <label class="block text-[10px] text-slate-400 uppercase mb-1">Days</label>
+                            <input type="number" id="d2-days" min="0" value="0" oninput="calculateLivePoints()" class="w-full bg-dark-900 border border-slate-700 rounded-lg px-3 py-1.5 text-sm text-slate-100">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] text-slate-400 uppercase mb-1">Hours</label>
+                            <input type="number" id="d2-hours" min="0" value="0" oninput="calculateLivePoints()" class="w-full bg-dark-900 border border-slate-700 rounded-lg px-3 py-1.5 text-sm text-slate-100">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] text-slate-400 uppercase mb-1">Minutes</label>
+                            <input type="number" id="d2-mins" min="0" value="0" oninput="calculateLivePoints()" class="w-full bg-dark-900 border border-slate-700 rounded-lg px-3 py-1.5 text-sm text-slate-100">
+                        </div>
                     </div>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                    <div>
-                        <label id="d2-val-label" class="block text-[11px] font-semibold text-slate-400 uppercase mb-1">Minutes</label>
-                        <input type="number" id="d2-speedups" min="0" value="0" oninput="calculateLivePoints()" class="w-full bg-dark-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-100">
-                    </div>
-                    <div>
-                        <label class="block text-[11px] font-semibold text-slate-400 uppercase mb-1">TrueGold Dust (1k pts/ea)</label>
-                        <input type="number" id="d2-truegold-dust" min="0" value="0" oninput="calculateLivePoints()" class="w-full bg-dark-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-100">
-                    </div>
+                <div>
+                    <label class="block text-[11px] font-semibold text-slate-400 uppercase mb-1">TrueGold Dust (1k pts/ea)</label>
+                    <input type="number" id="d2-truegold-dust" min="0" value="0" oninput="calculateLivePoints()" class="w-full bg-dark-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-100">
                 </div>
 
                 <div class="space-y-2 pt-2">
@@ -179,20 +185,23 @@
                 <h2 class="text-base font-bold text-rose-400 flex items-center gap-2">
                     <i class="fa-solid fa-shield-halved text-rose-400"></i> Day 4: Troop Training
                 </h2>
-                <p class="text-xs text-slate-400">Enter resources and select all feasible time slots.</p>
 
-                <div>
-                    <label class="block text-xs font-semibold text-slate-300 uppercase mb-2">Speedups Unit</label>
-                    <div class="grid grid-cols-3 gap-2 bg-dark-950 p-1.5 rounded-lg border border-slate-800">
-                        <button type="button" id="d4-unit-days" onclick="setSectionUnit('d4', 'Days')" class="py-1.5 text-xs font-bold rounded-md text-slate-400">Days</button>
-                        <button type="button" id="d4-unit-hours" onclick="setSectionUnit('d4', 'Hours')" class="py-1.5 text-xs font-bold rounded-md text-slate-400">Hours</button>
-                        <button type="button" id="d4-unit-mins" onclick="setSectionUnit('d4', 'Minutes')" class="py-1.5 text-xs font-bold rounded-md bg-gold-500 text-dark-950">Minutes</button>
+                <div class="bg-dark-950 p-3 rounded-lg border border-slate-800 space-y-2">
+                    <label class="block text-xs font-semibold text-slate-300 uppercase">Speedups</label>
+                    <div class="grid grid-cols-3 gap-2">
+                        <div>
+                            <label class="block text-[10px] text-slate-400 uppercase mb-1">Days</label>
+                            <input type="number" id="d4-days" min="0" value="0" oninput="calculateLivePoints()" class="w-full bg-dark-900 border border-slate-700 rounded-lg px-3 py-1.5 text-sm text-slate-100">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] text-slate-400 uppercase mb-1">Hours</label>
+                            <input type="number" id="d4-hours" min="0" value="0" oninput="calculateLivePoints()" class="w-full bg-dark-900 border border-slate-700 rounded-lg px-3 py-1.5 text-sm text-slate-100">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] text-slate-400 uppercase mb-1">Minutes</label>
+                            <input type="number" id="d4-mins" min="0" value="0" oninput="calculateLivePoints()" class="w-full bg-dark-900 border border-slate-700 rounded-lg px-3 py-1.5 text-sm text-slate-100">
+                        </div>
                     </div>
-                </div>
-
-                <div>
-                    <label id="d4-val-label" class="block text-[11px] font-semibold text-slate-400 uppercase mb-1">Minutes</label>
-                    <input type="number" id="d4-speedups" min="0" value="0" oninput="calculateLivePoints()" class="w-full bg-dark-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-100">
                 </div>
 
                 <div class="space-y-2 pt-2">
@@ -222,7 +231,6 @@
     </main>
 
     <script>
-        const units = { d1: 'Minutes', d2: 'Minutes', d4: 'Minutes' };
         const selectedSlots = { d1: new Set(), d2: new Set(), d4: new Set() };
         let currentTz = 'UTC';
         let uploadedScreenshot = null;
@@ -246,20 +254,6 @@
             document.getElementById('tz-local').className = tz === 'Local' ? "px-3 py-1 rounded-md font-semibold bg-gold-500 text-dark-950 transition" : "px-3 py-1 rounded-md font-semibold text-slate-400 hover:text-slate-200 transition";
             
             ['d1', 'd2', 'd4'].forEach(generateTimeSlots);
-        }
-
-        function setSectionUnit(section, unit) {
-            units[section] = unit;
-            ['days', 'hours', 'mins'].forEach(u => {
-                document.getElementById(`${section}-unit-${u}`).className = "py-1.5 text-xs font-bold rounded-md text-slate-400";
-            });
-
-            if (unit === 'Days') document.getElementById(`${section}-unit-days`).className = "py-1.5 text-xs font-bold rounded-md bg-gold-500 text-dark-950";
-            if (unit === 'Hours') document.getElementById(`${section}-unit-hours`).className = "py-1.5 text-xs font-bold rounded-md bg-gold-500 text-dark-950";
-            if (unit === 'Minutes') document.getElementById(`${section}-unit-mins`).className = "py-1.5 text-xs font-bold rounded-md bg-gold-500 text-dark-950";
-
-            document.getElementById(`${section}-val-label`).innerText = unit;
-            calculateLivePoints();
         }
 
         function convertUtcToLocalSlot(utcStartH, utcStartM) {
@@ -312,10 +306,10 @@
         }
 
         function getMinutes(section) {
-            const val = parseFloat(document.getElementById(`${section}-speedups`).value) || 0;
-            if (units[section] === 'Days') return val * 1440;
-            if (units[section] === 'Hours') return val * 60;
-            return val;
+            const d = parseFloat(document.getElementById(`${section}-days`).value) || 0;
+            const h = parseFloat(document.getElementById(`${section}-hours`).value) || 0;
+            const m = parseFloat(document.getElementById(`${section}-mins`).value) || 0;
+            return (d * 1440) + (h * 60) + m;
         }
 
         function calculateLivePoints() {

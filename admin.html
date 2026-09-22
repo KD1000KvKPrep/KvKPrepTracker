@@ -120,6 +120,18 @@
             return JSON.parse(localStorage.getItem('kvk_submissions') || '[]');
         }
 
+        function formatMins(totalMins) {
+            const days = Math.floor(totalMins / 1440);
+            const hours = Math.floor((totalMins % 1440) / 60);
+            const mins = totalMins % 60;
+            
+            let result = [];
+            if (days > 0) result.push(`${days}d`);
+            if (hours > 0) result.push(`${hours}h`);
+            if (mins > 0 || result.length === 0) result.push(`${mins}m`);
+            return result.join(' ');
+        }
+
         function renderTable() {
             const submissions = getSubmissions();
             const searchVal = document.getElementById('search-input').value.toLowerCase();
@@ -149,9 +161,9 @@
                 tr.innerHTML = `
                     <td class="py-3 px-4 font-bold text-slate-100">${sub.playerName}</td>
                     <td class="py-3 px-4"><span class="bg-slate-800 px-2 py-1 rounded border border-slate-700 text-[10px] font-mono">${sub.alliance}</span></td>
-                    <td class="py-3 px-4">${sub.day1.speedupMins.toLocaleString()} mins <br><span class="text-[10px] text-slate-400">TG: ${sub.day1.trueGold} | TTG: ${sub.day1.temperedTrueGold}</span></td>
-                    <td class="py-3 px-4">${sub.day2.speedupMins.toLocaleString()} mins <br><span class="text-[10px] text-slate-400">Dust: ${sub.day2.trueGoldDust}</span></td>
-                    <td class="py-3 px-4">${sub.day4.speedupMins.toLocaleString()} mins</td>
+                    <td class="py-3 px-4">${formatMins(sub.day1.speedupMins)} <br><span class="text-[10px] text-slate-400">TG: ${sub.day1.trueGold} | TTG: ${sub.day1.temperedTrueGold}</span></td>
+                    <td class="py-3 px-4">${formatMins(sub.day2.speedupMins)} <br><span class="text-[10px] text-slate-400">Dust: ${sub.day2.trueGoldDust}</span></td>
+                    <td class="py-3 px-4">${formatMins(sub.day4.speedupMins)}</td>
                     <td class="py-3 px-4 font-mono font-bold text-gold-400">${sub.totalPoints.toLocaleString()} pts</td>
                     <td class="py-3 px-4">
                         ${sub.screenshot 
@@ -166,7 +178,7 @@
             });
 
             document.getElementById('stat-players').innerText = filtered.length;
-            document.getElementById('stat-speedups').innerText = `${totalMins.toLocaleString()} m`;
+            document.getElementById('stat-speedups').innerText = formatMins(totalMins);
             document.getElementById('stat-score').innerText = `${totalPoints.toLocaleString()} Points`;
             document.getElementById('stat-screenshots').innerText = screenshotCount;
         }
