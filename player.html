@@ -93,6 +93,26 @@
                     <input type="text" id="other-alliance-input" placeholder="Enter alliance tag or name" 
                         class="w-full bg-dark-950 border border-slate-700 rounded-lg px-3 py-2.5 text-sm text-slate-100 focus:outline-none focus:border-gold-500">
                 </div>
+
+                <!-- GENERAL SPEEDUPS -->
+                <div class="border-t border-slate-800 pt-4 space-y-3">
+                    <span class="block text-xs font-bold text-gold-400 uppercase">🌐 General Speedups (Universal)</span>
+                    <div class="grid grid-cols-3 gap-3">
+                        <div class="bg-dark-950 p-2.5 rounded-lg border border-slate-800">
+                            <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Days</label>
+                            <input type="number" id="gen-days" min="0" value="0" placeholder="0" oninput="calculateLivePoints()" class="w-full bg-dark-900 border border-slate-700 rounded-md px-3 py-2 text-base font-bold text-gold-400 focus:outline-none focus:border-gold-500">
+                        </div>
+                        <div class="bg-dark-950 p-2.5 rounded-lg border border-slate-800">
+                            <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Hours</label>
+                            <input type="number" id="gen-hours" min="0" value="0" placeholder="0" oninput="calculateLivePoints()" class="w-full bg-dark-900 border border-slate-700 rounded-md px-3 py-2 text-base font-bold text-gold-400 focus:outline-none focus:border-gold-500">
+                        </div>
+                        <div class="bg-dark-950 p-2.5 rounded-lg border border-slate-800">
+                            <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Minutes</label>
+                            <input type="number" id="gen-mins" min="0" value="0" placeholder="0" oninput="calculateLivePoints()" class="w-full bg-dark-900 border border-slate-700 rounded-md px-3 py-2 text-base font-bold text-gold-400 focus:outline-none focus:border-gold-500">
+                        </div>
+                    </div>
+                </div>
+
             </div>
 
             <!-- DAY 1: CONSTRUCTION -->
@@ -101,42 +121,20 @@
                     <i class="fa-solid fa-hammer text-gold-500"></i> Day 1: Construction
                 </h2>
                 
-                <div class="bg-dark-950 p-4 rounded-xl border border-slate-800 space-y-4">
-                    <!-- General Speedups -->
-                    <div>
-                        <span class="block text-xs font-bold text-slate-300 uppercase mb-2">🌐 General Speedups</span>
-                        <div class="grid grid-cols-3 gap-3">
-                            <div class="bg-dark-900 p-2.5 rounded-lg border border-slate-700/60">
-                                <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Days</label>
-                                <input type="number" id="d1-gen-days" min="0" value="0" placeholder="0" oninput="calculateLivePoints()" class="w-full bg-dark-950 border border-slate-700 rounded-md px-3 py-2 text-base font-bold text-gold-400 focus:outline-none focus:border-gold-500">
-                            </div>
-                            <div class="bg-dark-900 p-2.5 rounded-lg border border-slate-700/60">
-                                <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Hours</label>
-                                <input type="number" id="d1-gen-hours" min="0" value="0" placeholder="0" oninput="calculateLivePoints()" class="w-full bg-dark-950 border border-slate-700 rounded-md px-3 py-2 text-base font-bold text-gold-400 focus:outline-none focus:border-gold-500">
-                            </div>
-                            <div class="bg-dark-900 p-2.5 rounded-lg border border-slate-700/60">
-                                <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Minutes</label>
-                                <input type="number" id="d1-gen-mins" min="0" value="0" placeholder="0" oninput="calculateLivePoints()" class="w-full bg-dark-950 border border-slate-700 rounded-md px-3 py-2 text-base font-bold text-gold-400 focus:outline-none focus:border-gold-500">
-                            </div>
+                <div class="bg-dark-950 p-4 rounded-xl border border-slate-800 space-y-3">
+                    <span class="block text-xs font-bold text-gold-400 uppercase">🏗️ Construction Speedups</span>
+                    <div class="grid grid-cols-3 gap-3">
+                        <div class="bg-dark-900 p-2.5 rounded-lg border border-slate-700/60">
+                            <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Days</label>
+                            <input type="number" id="d1-spec-days" min="0" value="0" placeholder="0" oninput="calculateLivePoints()" class="w-full bg-dark-950 border border-slate-700 rounded-md px-3 py-2 text-base font-bold text-gold-400 focus:outline-none focus:border-gold-500">
                         </div>
-                    </div>
-
-                    <!-- Building Speedups -->
-                    <div>
-                        <span class="block text-xs font-bold text-gold-400 uppercase mb-2">🏗️ Construction Speedups</span>
-                        <div class="grid grid-cols-3 gap-3">
-                            <div class="bg-dark-900 p-2.5 rounded-lg border border-slate-700/60">
-                                <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Days</label>
-                                <input type="number" id="d1-spec-days" min="0" value="0" placeholder="0" oninput="calculateLivePoints()" class="w-full bg-dark-950 border border-slate-700 rounded-md px-3 py-2 text-base font-bold text-gold-400 focus:outline-none focus:border-gold-500">
-                            </div>
-                            <div class="bg-dark-900 p-2.5 rounded-lg border border-slate-700/60">
-                                <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Hours</label>
-                                <input type="number" id="d1-spec-hours" min="0" value="0" placeholder="0" oninput="calculateLivePoints()" class="w-full bg-dark-950 border border-slate-700 rounded-md px-3 py-2 text-base font-bold text-gold-400 focus:outline-none focus:border-gold-500">
-                            </div>
-                            <div class="bg-dark-900 p-2.5 rounded-lg border border-slate-700/60">
-                                <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Minutes</label>
-                                <input type="number" id="d1-spec-mins" min="0" value="0" placeholder="0" oninput="calculateLivePoints()" class="w-full bg-dark-950 border border-slate-700 rounded-md px-3 py-2 text-base font-bold text-gold-400 focus:outline-none focus:border-gold-500">
-                            </div>
+                        <div class="bg-dark-900 p-2.5 rounded-lg border border-slate-700/60">
+                            <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Hours</label>
+                            <input type="number" id="d1-spec-hours" min="0" value="0" placeholder="0" oninput="calculateLivePoints()" class="w-full bg-dark-950 border border-slate-700 rounded-md px-3 py-2 text-base font-bold text-gold-400 focus:outline-none focus:border-gold-500">
+                        </div>
+                        <div class="bg-dark-900 p-2.5 rounded-lg border border-slate-700/60">
+                            <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Minutes</label>
+                            <input type="number" id="d1-spec-mins" min="0" value="0" placeholder="0" oninput="calculateLivePoints()" class="w-full bg-dark-950 border border-slate-700 rounded-md px-3 py-2 text-base font-bold text-gold-400 focus:outline-none focus:border-gold-500">
                         </div>
                     </div>
                 </div>
@@ -164,42 +162,20 @@
                     <i class="fa-solid fa-flask text-sky-400"></i> Day 2: Research
                 </h2>
 
-                <div class="bg-dark-950 p-4 rounded-xl border border-slate-800 space-y-4">
-                    <!-- General Speedups -->
-                    <div>
-                        <span class="block text-xs font-bold text-slate-300 uppercase mb-2">🌐 General Speedups</span>
-                        <div class="grid grid-cols-3 gap-3">
-                            <div class="bg-dark-900 p-2.5 rounded-lg border border-slate-700/60">
-                                <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Days</label>
-                                <input type="number" id="d2-gen-days" min="0" value="0" placeholder="0" oninput="calculateLivePoints()" class="w-full bg-dark-950 border border-slate-700 rounded-md px-3 py-2 text-base font-bold text-sky-400 focus:outline-none focus:border-sky-500">
-                            </div>
-                            <div class="bg-dark-900 p-2.5 rounded-lg border border-slate-700/60">
-                                <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Hours</label>
-                                <input type="number" id="d2-gen-hours" min="0" value="0" placeholder="0" oninput="calculateLivePoints()" class="w-full bg-dark-950 border border-slate-700 rounded-md px-3 py-2 text-base font-bold text-sky-400 focus:outline-none focus:border-sky-500">
-                            </div>
-                            <div class="bg-dark-900 p-2.5 rounded-lg border border-slate-700/60">
-                                <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Minutes</label>
-                                <input type="number" id="d2-gen-mins" min="0" value="0" placeholder="0" oninput="calculateLivePoints()" class="w-full bg-dark-950 border border-slate-700 rounded-md px-3 py-2 text-base font-bold text-sky-400 focus:outline-none focus:border-sky-500">
-                            </div>
+                <div class="bg-dark-950 p-4 rounded-xl border border-slate-800 space-y-3">
+                    <span class="block text-xs font-bold text-sky-400 uppercase">🔬 Research Speedups</span>
+                    <div class="grid grid-cols-3 gap-3">
+                        <div class="bg-dark-900 p-2.5 rounded-lg border border-slate-700/60">
+                            <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Days</label>
+                            <input type="number" id="d2-spec-days" min="0" value="0" placeholder="0" oninput="calculateLivePoints()" class="w-full bg-dark-950 border border-slate-700 rounded-md px-3 py-2 text-base font-bold text-sky-400 focus:outline-none focus:border-sky-500">
                         </div>
-                    </div>
-
-                    <!-- Research Speedups -->
-                    <div>
-                        <span class="block text-xs font-bold text-sky-400 uppercase mb-2">🔬 Research Speedups</span>
-                        <div class="grid grid-cols-3 gap-3">
-                            <div class="bg-dark-900 p-2.5 rounded-lg border border-slate-700/60">
-                                <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Days</label>
-                                <input type="number" id="d2-spec-days" min="0" value="0" placeholder="0" oninput="calculateLivePoints()" class="w-full bg-dark-950 border border-slate-700 rounded-md px-3 py-2 text-base font-bold text-sky-400 focus:outline-none focus:border-sky-500">
-                            </div>
-                            <div class="bg-dark-900 p-2.5 rounded-lg border border-slate-700/60">
-                                <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Hours</label>
-                                <input type="number" id="d2-spec-hours" min="0" value="0" placeholder="0" oninput="calculateLivePoints()" class="w-full bg-dark-950 border border-slate-700 rounded-md px-3 py-2 text-base font-bold text-sky-400 focus:outline-none focus:border-sky-500">
-                            </div>
-                            <div class="bg-dark-900 p-2.5 rounded-lg border border-slate-700/60">
-                                <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Minutes</label>
-                                <input type="number" id="d2-spec-mins" min="0" value="0" placeholder="0" oninput="calculateLivePoints()" class="w-full bg-dark-950 border border-slate-700 rounded-md px-3 py-2 text-base font-bold text-sky-400 focus:outline-none focus:border-sky-500">
-                            </div>
+                        <div class="bg-dark-900 p-2.5 rounded-lg border border-slate-700/60">
+                            <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Hours</label>
+                            <input type="number" id="d2-spec-hours" min="0" value="0" placeholder="0" oninput="calculateLivePoints()" class="w-full bg-dark-950 border border-slate-700 rounded-md px-3 py-2 text-base font-bold text-sky-400 focus:outline-none focus:border-sky-500">
+                        </div>
+                        <div class="bg-dark-900 p-2.5 rounded-lg border border-slate-700/60">
+                            <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Minutes</label>
+                            <input type="number" id="d2-spec-mins" min="0" value="0" placeholder="0" oninput="calculateLivePoints()" class="w-full bg-dark-950 border border-slate-700 rounded-md px-3 py-2 text-base font-bold text-sky-400 focus:outline-none focus:border-sky-500">
                         </div>
                     </div>
                 </div>
@@ -221,42 +197,20 @@
                     <i class="fa-solid fa-shield-halved text-rose-400"></i> Day 4: Troop Training
                 </h2>
 
-                <div class="bg-dark-950 p-4 rounded-xl border border-slate-800 space-y-4">
-                    <!-- General Speedups -->
-                    <div>
-                        <span class="block text-xs font-bold text-slate-300 uppercase mb-2">🌐 General Speedups</span>
-                        <div class="grid grid-cols-3 gap-3">
-                            <div class="bg-dark-900 p-2.5 rounded-lg border border-slate-700/60">
-                                <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Days</label>
-                                <input type="number" id="d4-gen-days" min="0" value="0" placeholder="0" oninput="calculateLivePoints()" class="w-full bg-dark-950 border border-slate-700 rounded-md px-3 py-2 text-base font-bold text-rose-400 focus:outline-none focus:border-rose-500">
-                            </div>
-                            <div class="bg-dark-900 p-2.5 rounded-lg border border-slate-700/60">
-                                <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Hours</label>
-                                <input type="number" id="d4-gen-hours" min="0" value="0" placeholder="0" oninput="calculateLivePoints()" class="w-full bg-dark-950 border border-slate-700 rounded-md px-3 py-2 text-base font-bold text-rose-400 focus:outline-none focus:border-rose-500">
-                            </div>
-                            <div class="bg-dark-900 p-2.5 rounded-lg border border-slate-700/60">
-                                <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Minutes</label>
-                                <input type="number" id="d4-gen-mins" min="0" value="0" placeholder="0" oninput="calculateLivePoints()" class="w-full bg-dark-950 border border-slate-700 rounded-md px-3 py-2 text-base font-bold text-rose-400 focus:outline-none focus:border-rose-500">
-                            </div>
+                <div class="bg-dark-950 p-4 rounded-xl border border-slate-800 space-y-3">
+                    <span class="block text-xs font-bold text-rose-400 uppercase">⚔️ Training Speedups</span>
+                    <div class="grid grid-cols-3 gap-3">
+                        <div class="bg-dark-900 p-2.5 rounded-lg border border-slate-700/60">
+                            <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Days</label>
+                            <input type="number" id="d4-spec-days" min="0" value="0" placeholder="0" oninput="calculateLivePoints()" class="w-full bg-dark-950 border border-slate-700 rounded-md px-3 py-2 text-base font-bold text-rose-400 focus:outline-none focus:border-rose-500">
                         </div>
-                    </div>
-
-                    <!-- Training Speedups -->
-                    <div>
-                        <span class="block text-xs font-bold text-rose-400 uppercase mb-2">⚔️ Training Speedups</span>
-                        <div class="grid grid-cols-3 gap-3">
-                            <div class="bg-dark-900 p-2.5 rounded-lg border border-slate-700/60">
-                                <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Days</label>
-                                <input type="number" id="d4-spec-days" min="0" value="0" placeholder="0" oninput="calculateLivePoints()" class="w-full bg-dark-950 border border-slate-700 rounded-md px-3 py-2 text-base font-bold text-rose-400 focus:outline-none focus:border-rose-500">
-                            </div>
-                            <div class="bg-dark-900 p-2.5 rounded-lg border border-slate-700/60">
-                                <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Hours</label>
-                                <input type="number" id="d4-spec-hours" min="0" value="0" placeholder="0" oninput="calculateLivePoints()" class="w-full bg-dark-950 border border-slate-700 rounded-md px-3 py-2 text-base font-bold text-rose-400 focus:outline-none focus:border-rose-500">
-                            </div>
-                            <div class="bg-dark-900 p-2.5 rounded-lg border border-slate-700/60">
-                                <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Minutes</label>
-                                <input type="number" id="d4-spec-mins" min="0" value="0" placeholder="0" oninput="calculateLivePoints()" class="w-full bg-dark-950 border border-slate-700 rounded-md px-3 py-2 text-base font-bold text-rose-400 focus:outline-none focus:border-rose-500">
-                            </div>
+                        <div class="bg-dark-900 p-2.5 rounded-lg border border-slate-700/60">
+                            <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Hours</label>
+                            <input type="number" id="d4-spec-hours" min="0" value="0" placeholder="0" oninput="calculateLivePoints()" class="w-full bg-dark-950 border border-slate-700 rounded-md px-3 py-2 text-base font-bold text-rose-400 focus:outline-none focus:border-rose-500">
+                        </div>
+                        <div class="bg-dark-900 p-2.5 rounded-lg border border-slate-700/60">
+                            <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Minutes</label>
+                            <input type="number" id="d4-spec-mins" min="0" value="0" placeholder="0" oninput="calculateLivePoints()" class="w-full bg-dark-950 border border-slate-700 rounded-md px-3 py-2 text-base font-bold text-rose-400 focus:outline-none focus:border-rose-500">
                         </div>
                     </div>
                 </div>
@@ -362,31 +316,31 @@
             }
         }
 
-        function getMinutes(prefix) {
-            const genD = parseFloat(document.getElementById(`${prefix}-gen-days`).value) || 0;
-            const genH = parseFloat(document.getElementById(`${prefix}-gen-hours`).value) || 0;
-            const genM = parseFloat(document.getElementById(`${prefix}-gen-mins`).value) || 0;
+        function getGeneralMinutes() {
+            const days = parseFloat(document.getElementById('gen-days').value) || 0;
+            const hours = parseFloat(document.getElementById('gen-hours').value) || 0;
+            const mins = parseFloat(document.getElementById('gen-mins').value) || 0;
+            return (days * 1440) + (hours * 60) + mins;
+        }
 
-            const specD = parseFloat(document.getElementById(`${prefix}-spec-days`).value) || 0;
-            const specH = parseFloat(document.getElementById(`${prefix}-spec-hours`).value) || 0;
-            const specM = parseFloat(document.getElementById(`${prefix}-spec-mins`).value) || 0;
-
-            const genMins = (genD * 1440) + (genH * 60) + genM;
-            const specMins = (specD * 1440) + (specH * 60) + specM;
-
-            return genMins + specMins;
+        function getCategoryMinutes(prefix) {
+            const days = parseFloat(document.getElementById(`${prefix}-spec-days`).value) || 0;
+            const hours = parseFloat(document.getElementById(`${prefix}-spec-hours`).value) || 0;
+            const mins = parseFloat(document.getElementById(`${prefix}-spec-mins`).value) || 0;
+            return (days * 1440) + (hours * 60) + mins;
         }
 
         function calculateLivePoints() {
-            const d1Mins = getMinutes('d1');
-            const d2Mins = getMinutes('d2');
-            const d4Mins = getMinutes('d4');
+            const genMins = getGeneralMinutes();
+            const d1Mins = getCategoryMinutes('d1');
+            const d2Mins = getCategoryMinutes('d2');
+            const d4Mins = getCategoryMinutes('d4');
 
             const trueGold = parseFloat(document.getElementById('d1-truegold').value) || 0;
             const temperedTrueGold = parseFloat(document.getElementById('d1-tempered').value) || 0;
             const trueGoldDust = parseFloat(document.getElementById('d2-truegold-dust').value) || 0;
 
-            const speedupPoints = (d1Mins + d2Mins + d4Mins) * 30;
+            const speedupPoints = (genMins + d1Mins + d2Mins + d4Mins) * 30;
             const resourcePoints = (trueGold * 2000) + (trueGoldDust * 1000) + (temperedTrueGold * 30000);
 
             const totalPoints = speedupPoints + resourcePoints;
@@ -420,19 +374,20 @@
                 submittedAt: new Date().toISOString(),
                 screenshot: uploadedScreenshot,
                 totalPoints: calculateLivePoints(),
+                generalSpeedupMins: getGeneralMinutes(),
                 day1: {
-                    speedupMins: getMinutes('d1'),
+                    speedupMins: getCategoryMinutes('d1'),
                     trueGold: parseFloat(document.getElementById('d1-truegold').value) || 0,
                     temperedTrueGold: parseFloat(document.getElementById('d1-tempered').value) || 0,
                     slots: Array.from(selectedSlots.d1)
                 },
                 day2: {
-                    speedupMins: getMinutes('d2'),
+                    speedupMins: getCategoryMinutes('d2'),
                     trueGoldDust: parseFloat(document.getElementById('d2-truegold-dust').value) || 0,
                     slots: Array.from(selectedSlots.d2)
                 },
                 day4: {
-                    speedupMins: getMinutes('d4'),
+                    speedupMins: getCategoryMinutes('d4'),
                     slots: Array.from(selectedSlots.d4)
                 }
             };
