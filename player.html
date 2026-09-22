@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KingShot KvK Speedup Entry</title>
+    <title>KingShot KvK Player Submission</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script>
@@ -21,29 +21,66 @@
 </head>
 <body class="bg-dark-950 text-slate-100 min-h-screen flex flex-col font-sans">
     <header class="bg-dark-900 border-b border-slate-800 sticky top-0 z-50">
-        <div class="max-w-4xl mx-auto px-4 py-3 flex items-center space-x-3">
-            <div class="bg-gold-500/10 p-2 rounded-lg border border-gold-500/30">
-                <i class="fa-solid fa-trophy text-gold-500 text-xl"></i>
+        <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <div class="bg-gold-500/10 p-2 rounded-lg border border-gold-500/30">
+                    <i class="fa-solid fa-trophy text-gold-500 text-xl"></i>
+                </div>
+                <div>
+                    <h1 class="text-lg font-bold uppercase text-gold-400">KvK Prep Tracker</h1>
+                    <p class="text-xs text-slate-400">Player Entry Portal</p>
+                </div>
             </div>
-            <div>
-                <h1 class="text-lg font-bold uppercase text-gold-400">KvK Prep Tracker</h1>
-                <p class="text-xs text-slate-400">Day 1 Speedup Submission</p>
-            </div>
+            <a href="admin.html" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold py-1.5 px-3 rounded-lg border border-slate-700 transition">
+                <i class="fa-solid fa-user-shield mr-1"></i> Admin View
+            </a>
         </div>
     </header>
 
     <main class="flex-grow max-w-4xl mx-auto w-full px-4 py-6">
-        <div class="bg-dark-900 border border-slate-800 rounded-xl p-5 md:p-6 shadow-xl space-y-6">
-            <div class="text-center">
-                <h2 class="text-xl font-bold text-slate-100">Submit Day 1 Speedups</h2>
-                <p class="text-xs text-slate-400 mt-1">Enter your available speedups for Day 1 KvK Prep.</p>
-            </div>
+        <form id="speedup-form" onsubmit="handleFormSubmit(event)" class="space-y-6">
+            
+            <!-- HEADER & PLAYER DETAILS -->
+            <div class="bg-dark-900 border border-slate-800 rounded-xl p-5 shadow-xl space-y-5">
+                
+                <!-- BACKPACK SCREENSHOT UPLOAD -->
+                <div class="border-b border-slate-800 pb-4">
+                    <label class="block text-xs font-semibold text-slate-300 uppercase mb-1">Backpack Screenshot (Optional)</label>
+                    <p class="text-[11px] text-slate-400 mb-3">Upload a screenshot of your backpack to help verify your resources.</p>
+                    <div class="flex items-center gap-3">
+                        <label class="bg-gold-500 hover:bg-gold-400 text-dark-950 font-bold text-xs py-2 px-4 rounded-lg cursor-pointer transition">
+                            Choose File
+                            <input type="file" id="backpack-file" accept="image/*" class="hidden" onchange="updateFileName(this)">
+                        </label>
+                        <span id="file-name" class="text-xs text-slate-400 italic">No file chosen</span>
+                    </div>
+                </div>
 
-            <form id="speedup-form" onsubmit="handleFormSubmit(event)" class="space-y-6">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- TIMEZONE & DEMAND LEGEND -->
+                <div class="space-y-3">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 bg-dark-950 p-3 rounded-lg border border-slate-800">
+                        <span class="text-xs font-bold uppercase text-slate-300">Timezone Display:</span>
+                        <div class="flex bg-dark-900 p-1 rounded-lg border border-slate-700 text-xs">
+                            <button type="button" id="tz-utc" onclick="setTimezone('UTC')" class="px-3 py-1 rounded-md font-semibold bg-gold-500 text-dark-950 transition">🌐 UTC</button>
+                            <button type="button" id="tz-local" onclick="setTimezone('Local')" class="px-3 py-1 rounded-md font-semibold text-slate-400 hover:text-slate-200 transition">🕒 Local Time</button>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center justify-between text-[11px] bg-dark-950 p-2.5 rounded-lg border border-slate-800 text-slate-300">
+                        <span class="font-bold">Slot Demand:</span>
+                        <div class="flex gap-3">
+                            <span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-emerald-500"></span> Low (0-10)</span>
+                            <span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-amber-500"></span> Moderate (11-20)</span>
+                            <span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-rose-500"></span> High (21+)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MEMBER DETAILS -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
                     <div>
                         <label class="block text-xs font-semibold text-slate-300 uppercase mb-2">In-Game Name *</label>
-                        <input type="text" id="player-name" required oninput="checkForExistingEntry()" placeholder="Enter exact game name" 
+                        <input type="text" id="player-name" required placeholder="Enter exact game name" 
                             class="w-full bg-dark-950 border border-slate-700 rounded-lg px-3 py-2.5 text-sm text-slate-100 focus:outline-none focus:border-gold-500">
                     </div>
                     <div>
@@ -60,196 +97,272 @@
                     </div>
                 </div>
 
-                <!-- Custom Alliance Input (Appears when "Other" is selected) -->
                 <div id="other-alliance-container" class="hidden">
                     <label class="block text-xs font-semibold text-slate-300 uppercase mb-2">Specify Alliance Name *</label>
-                    <input type="text" id="other-alliance-input" oninput="checkForExistingEntry()" placeholder="Enter alliance tag or name" 
+                    <input type="text" id="other-alliance-input" placeholder="Enter alliance tag or name" 
                         class="w-full bg-dark-950 border border-slate-700 rounded-lg px-3 py-2.5 text-sm text-slate-100 focus:outline-none focus:border-gold-500">
                 </div>
-
-                <div id="update-alert" class="hidden bg-amber-500/10 border border-amber-500/30 rounded-lg p-3 text-xs text-amber-300 flex items-center space-x-2">
-                    <i class="fa-solid fa-circle-info text-amber-400"></i>
-                    <span>Existing entry found! Submitting will <strong>update</strong> your previous record.</span>
-                </div>
-
-                <div class="space-y-4 pt-2">
-                    <h3 class="text-xs font-bold uppercase tracking-wider text-gold-500 border-b border-slate-800 pb-2">Speedup Inventories</h3>
-
-                    <div class="bg-dark-950 p-4 rounded-lg border border-slate-800/80">
-                        <div class="flex justify-between items-center mb-2">
-                            <label class="text-xs font-semibold text-slate-200"><i class="fa-solid fa-hammer text-amber-500 mr-1"></i> Construction Speedups</label>
-                            <span id="points-construction" class="text-xs font-mono text-gold-400">0 Pts</span>
-                        </div>
-                        <div class="grid grid-cols-3 gap-2">
-                            <div><span class="text-[10px] text-slate-400 block mb-1">Days</span><input type="number" id="const-d" min="0" value="0" oninput="calculateLivePoints()" class="w-full bg-dark-900 border border-slate-700 rounded px-2 py-1.5 text-xs text-center"></div>
-                            <div><span class="text-[10px] text-slate-400 block mb-1">Hours</span><input type="number" id="const-h" min="0" max="23" value="0" oninput="calculateLivePoints()" class="w-full bg-dark-900 border border-slate-700 rounded px-2 py-1.5 text-xs text-center"></div>
-                            <div><span class="text-[10px] text-slate-400 block mb-1">Mins</span><input type="number" id="const-m" min="0" max="59" value="0" oninput="calculateLivePoints()" class="w-full bg-dark-900 border border-slate-700 rounded px-2 py-1.5 text-xs text-center"></div>
-                        </div>
-                    </div>
-
-                    <div class="bg-dark-950 p-4 rounded-lg border border-slate-800/80">
-                        <div class="flex justify-between items-center mb-2">
-                            <label class="text-xs font-semibold text-slate-200"><i class="fa-solid fa-flask text-cyan-400 mr-1"></i> Research Speedups</label>
-                            <span id="points-research" class="text-xs font-mono text-gold-400">0 Pts</span>
-                        </div>
-                        <div class="grid grid-cols-3 gap-2">
-                            <div><span class="text-[10px] text-slate-400 block mb-1">Days</span><input type="number" id="res-d" min="0" value="0" oninput="calculateLivePoints()" class="w-full bg-dark-900 border border-slate-700 rounded px-2 py-1.5 text-xs text-center"></div>
-                            <div><span class="text-[10px] text-slate-400 block mb-1">Hours</span><input type="number" id="res-h" min="0" max="23" value="0" oninput="calculateLivePoints()" class="w-full bg-dark-900 border border-slate-700 rounded px-2 py-1.5 text-xs text-center"></div>
-                            <div><span class="text-[10px] text-slate-400 block mb-1">Mins</span><input type="number" id="res-m" min="0" max="59" value="0" oninput="calculateLivePoints()" class="w-full bg-dark-900 border border-slate-700 rounded px-2 py-1.5 text-xs text-center"></div>
-                        </div>
-                    </div>
-
-                    <div class="bg-dark-950 p-4 rounded-lg border border-slate-800/80">
-                        <div class="flex justify-between items-center mb-2">
-                            <label class="text-xs font-semibold text-slate-200"><i class="fa-solid fa-shield-halved text-emerald-400 mr-1"></i> Troop Training Speedups</label>
-                            <span id="points-troops" class="text-xs font-mono text-gold-400">0 Pts</span>
-                        </div>
-                        <div class="grid grid-cols-3 gap-2">
-                            <div><span class="text-[10px] text-slate-400 block mb-1">Days</span><input type="number" id="troop-d" min="0" value="0" oninput="calculateLivePoints()" class="w-full bg-dark-900 border border-slate-700 rounded px-2 py-1.5 text-xs text-center"></div>
-                            <div><span class="text-[10px] text-slate-400 block mb-1">Hours</span><input type="number" id="troop-h" min="0" max="23" value="0" oninput="calculateLivePoints()" class="w-full bg-dark-900 border border-slate-700 rounded px-2 py-1.5 text-xs text-center"></div>
-                            <div><span class="text-[10px] text-slate-400 block mb-1">Mins</span><input type="number" id="troop-m" min="0" max="59" value="0" oninput="calculateLivePoints()" class="w-full bg-dark-900 border border-slate-700 rounded px-2 py-1.5 text-xs text-center"></div>
-                        </div>
-                    </div>
-
-                    <div class="bg-dark-950 p-4 rounded-lg border border-slate-800/80">
-                        <div class="flex justify-between items-center mb-2">
-                            <label class="text-xs font-semibold text-slate-200"><i class="fa-solid fa-bolt text-purple-400 mr-1"></i> General Speedups</label>
-                            <span id="points-general" class="text-xs font-mono text-gold-400">0 Pts</span>
-                        </div>
-                        <div class="grid grid-cols-3 gap-2">
-                            <div><span class="text-[10px] text-slate-400 block mb-1">Days</span><input type="number" id="gen-d" min="0" value="0" oninput="calculateLivePoints()" class="w-full bg-dark-900 border border-slate-700 rounded px-2 py-1.5 text-xs text-center"></div>
-                            <div><span class="text-[10px] text-slate-400 block mb-1">Hours</span><input type="number" id="gen-h" min="0" max="23" value="0" oninput="calculateLivePoints()" class="w-full bg-dark-900 border border-slate-700 rounded px-2 py-1.5 text-xs text-center"></div>
-                            <div><span class="text-[10px] text-slate-400 block mb-1">Mins</span><input type="number" id="gen-m" min="0" max="59" value="0" oninput="calculateLivePoints()" class="w-full bg-dark-900 border border-slate-700 rounded px-2 py-1.5 text-xs text-center"></div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="bg-gradient-to-r from-gold-500/10 via-amber-500/10 to-gold-500/10 border border-gold-500/30 rounded-xl p-4 text-center">
-                    <p class="text-xs font-semibold uppercase text-slate-300">Total Calculated Score</p>
-                    <p id="total-points-preview" class="text-2xl font-black text-gold-400 font-mono mt-1">0 Points</p>
-                    <p class="text-[11px] text-slate-400 mt-1">1 Min Speedup = 30 Points</p>
-                </div>
-
-                <button type="submit" id="submit-btn" class="w-full bg-gold-500 hover:bg-gold-400 text-dark-950 font-bold py-3 px-4 rounded-xl shadow-lg transition flex justify-center items-center gap-2">
-                    <i class="fa-solid fa-paper-plane"></i>
-                    <span id="btn-text">Submit Speedup Data</span>
-                </button>
-            </form>
-
-            <div id="success-message" class="hidden mt-4 p-4 bg-emerald-500/10 border border-emerald-500/30 rounded-xl text-center">
-                <i class="fa-solid fa-circle-check text-emerald-400 text-2xl mb-1"></i>
-                <p class="text-sm font-bold text-emerald-300">Submission Recorded!</p>
-                <p class="text-xs text-slate-300 mt-1">Your speedup figures have been successfully registered.</p>
             </div>
+
+            <!-- DAY 1: CONSTRUCTION -->
+            <div class="bg-dark-900 border border-slate-800 rounded-xl p-5 shadow-xl space-y-4">
+                <h2 class="text-base font-bold text-gold-400 flex items-center gap-2">
+                    <i class="fa-solid fa-hammer text-gold-500"></i> Day 1: Construction
+                </h2>
+                <p class="text-xs text-slate-400">Enter resources and select all feasible time slots.</p>
+
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 uppercase mb-2">Speedups Unit</label>
+                    <div class="grid grid-cols-3 gap-2 bg-dark-950 p-1.5 rounded-lg border border-slate-800">
+                        <button type="button" id="d1-unit-days" onclick="setSectionUnit('d1', 'Days')" class="py-1.5 text-xs font-bold rounded-md text-slate-400">Days</button>
+                        <button type="button" id="d1-unit-hours" onclick="setSectionUnit('d1', 'Hours')" class="py-1.5 text-xs font-bold rounded-md text-slate-400">Hours</button>
+                        <button type="button" id="d1-unit-mins" onclick="setSectionUnit('d1', 'Minutes')" class="py-1.5 text-xs font-bold rounded-md bg-gold-500 text-dark-950">Minutes</button>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                    <div>
+                        <label id="d1-val-label" class="block text-[11px] font-semibold text-slate-400 uppercase mb-1">Minutes</label>
+                        <input type="number" id="d1-speedups" min="0" value="0" oninput="calculateLivePoints()" class="w-full bg-dark-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-100">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-semibold text-slate-400 uppercase mb-1">TrueGold</label>
+                        <input type="number" id="d1-truegold" min="0" value="0" class="w-full bg-dark-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-100">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-semibold text-slate-400 uppercase mb-1">Tempered TrueGold</label>
+                        <input type="number" id="d1-tempered" min="0" value="0" class="w-full bg-dark-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-100">
+                    </div>
+                </div>
+
+                <div class="space-y-2 pt-2">
+                    <label class="block text-xs font-semibold text-slate-300 uppercase">Available Time Slots</label>
+                    <div id="d1-slots-grid" class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-7 gap-1.5 max-h-52 overflow-y-auto p-2 bg-dark-950 border border-slate-800 rounded-lg"></div>
+                </div>
+            </div>
+
+            <!-- DAY 2: RESEARCH -->
+            <div class="bg-dark-900 border border-slate-800 rounded-xl p-5 shadow-xl space-y-4">
+                <h2 class="text-base font-bold text-sky-400 flex items-center gap-2">
+                    <i class="fa-solid fa-flask text-sky-400"></i> Day 2: Research
+                </h2>
+                <p class="text-xs text-slate-400">Enter resources and select all feasible time slots.</p>
+
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 uppercase mb-2">Speedups Unit</label>
+                    <div class="grid grid-cols-3 gap-2 bg-dark-950 p-1.5 rounded-lg border border-slate-800">
+                        <button type="button" id="d2-unit-days" onclick="setSectionUnit('d2', 'Days')" class="py-1.5 text-xs font-bold rounded-md text-slate-400">Days</button>
+                        <button type="button" id="d2-unit-hours" onclick="setSectionUnit('d2', 'Hours')" class="py-1.5 text-xs font-bold rounded-md text-slate-400">Hours</button>
+                        <button type="button" id="d2-unit-mins" onclick="setSectionUnit('d2', 'Minutes')" class="py-1.5 text-xs font-bold rounded-md bg-gold-500 text-dark-950">Minutes</button>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <div>
+                        <label id="d2-val-label" class="block text-[11px] font-semibold text-slate-400 uppercase mb-1">Minutes</label>
+                        <input type="number" id="d2-speedups" min="0" value="0" oninput="calculateLivePoints()" class="w-full bg-dark-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-100">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-semibold text-slate-400 uppercase mb-1">TrueGold Dust</label>
+                        <input type="number" id="d2-truegold-dust" min="0" value="0" class="w-full bg-dark-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-100">
+                    </div>
+                </div>
+
+                <div class="space-y-2 pt-2">
+                    <label class="block text-xs font-semibold text-slate-300 uppercase">Available Time Slots</label>
+                    <div id="d2-slots-grid" class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-7 gap-1.5 max-h-52 overflow-y-auto p-2 bg-dark-950 border border-slate-800 rounded-lg"></div>
+                </div>
+            </div>
+
+            <!-- DAY 4: TROOP TRAINING -->
+            <div class="bg-dark-900 border border-slate-800 rounded-xl p-5 shadow-xl space-y-4">
+                <h2 class="text-base font-bold text-rose-400 flex items-center gap-2">
+                    <i class="fa-solid fa-shield-halved text-rose-400"></i> Day 4: Troop Training
+                </h2>
+                <p class="text-xs text-slate-400">Enter resources and select all feasible time slots.</p>
+
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 uppercase mb-2">Speedups Unit</label>
+                    <div class="grid grid-cols-3 gap-2 bg-dark-950 p-1.5 rounded-lg border border-slate-800">
+                        <button type="button" id="d4-unit-days" onclick="setSectionUnit('d4', 'Days')" class="py-1.5 text-xs font-bold rounded-md text-slate-400">Days</button>
+                        <button type="button" id="d4-unit-hours" onclick="setSectionUnit('d4', 'Hours')" class="py-1.5 text-xs font-bold rounded-md text-slate-400">Hours</button>
+                        <button type="button" id="d4-unit-mins" onclick="setSectionUnit('d4', 'Minutes')" class="py-1.5 text-xs font-bold rounded-md bg-gold-500 text-dark-950">Minutes</button>
+                    </div>
+                </div>
+
+                <div>
+                    <label id="d4-val-label" class="block text-[11px] font-semibold text-slate-400 uppercase mb-1">Minutes</label>
+                    <input type="number" id="d4-speedups" min="0" value="0" oninput="calculateLivePoints()" class="w-full bg-dark-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-100">
+                </div>
+
+                <div class="space-y-2 pt-2">
+                    <label class="block text-xs font-semibold text-slate-300 uppercase">Available Time Slots</label>
+                    <div id="d4-slots-grid" class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-7 gap-1.5 max-h-52 overflow-y-auto p-2 bg-dark-950 border border-slate-800 rounded-lg"></div>
+                </div>
+            </div>
+
+            <!-- TOTAL SCORE PREVIEW & SUBMIT -->
+            <div class="bg-gradient-to-r from-gold-500/10 via-amber-500/10 to-gold-500/10 border border-gold-500/30 rounded-xl p-4 text-center">
+                <p class="text-xs font-semibold uppercase text-slate-300">Total Calculated Score Across All Days</p>
+                <p id="total-points-preview" class="text-2xl font-black text-gold-400 font-mono mt-1">0 Points</p>
+                <p class="text-[11px] text-slate-400 mt-1">1 Min Speedup = 30 Points</p>
+            </div>
+
+            <button type="submit" id="submit-btn" class="w-full bg-gold-500 hover:bg-gold-400 text-dark-950 font-bold py-3.5 px-4 rounded-xl shadow-lg transition flex justify-center items-center gap-2">
+                <i class="fa-solid fa-paper-plane"></i>
+                <span>Submit All Entries</span>
+            </button>
+        </form>
+
+        <div id="success-message" class="hidden mt-4 p-4 bg-emerald-500/10 border border-emerald-500/30 rounded-xl text-center">
+            <i class="fa-solid fa-circle-check text-emerald-400 text-2xl mb-1"></i>
+            <p class="text-sm font-bold text-emerald-300">All Entries Submitted Successfully!</p>
+            <p class="text-xs text-slate-300 mt-1">Your speedups and time slot preferences have been recorded.</p>
         </div>
     </main>
 
     <script>
-        let memberSubmissions = JSON.parse(localStorage.getItem("kvk_submissions") || "[]");
+        const units = { d1: 'Minutes', d2: 'Minutes', d4: 'Minutes' };
+        const selectedSlots = { d1: new Set(), d2: new Set(), d4: new Set() };
+        let currentTz = 'UTC';
+        let uploadedScreenshot = null;
 
-        function handleAllianceChange() {
-            const select = document.getElementById('player-alliance');
-            const otherContainer = document.getElementById('other-alliance-container');
-            const otherInput = document.getElementById('other-alliance-input');
-
-            if (select.value === 'Other') {
-                otherContainer.classList.remove('hidden');
-                otherInput.required = true;
+        function updateFileName(input) {
+            const file = input.files[0];
+            if (file) {
+                document.getElementById('file-name').innerText = file.name;
+                const reader = new FileReader();
+                reader.onload = (e) => { uploadedScreenshot = e.target.result; };
+                reader.readAsDataURL(file);
             } else {
-                otherContainer.classList.add('hidden');
-                otherInput.required = false;
-                otherInput.value = '';
+                document.getElementById('file-name').innerText = "No file chosen";
+                uploadedScreenshot = null;
             }
-            checkForExistingEntry();
         }
 
-        function getSelectedAlliance() {
-            const select = document.getElementById('player-alliance');
-            if (select.value === 'Other') {
-                return document.getElementById('other-alliance-input').value.trim();
+        function setTimezone(tz) {
+            currentTz = tz;
+            document.getElementById('tz-utc').className = tz === 'UTC' ? "px-3 py-1 rounded-md font-semibold bg-gold-500 text-dark-950 transition" : "px-3 py-1 rounded-md font-semibold text-slate-400 hover:text-slate-200 transition";
+            document.getElementById('tz-local').className = tz === 'Local' ? "px-3 py-1 rounded-md font-semibold bg-gold-500 text-dark-950 transition" : "px-3 py-1 rounded-md font-semibold text-slate-400 hover:text-slate-200 transition";
+        }
+
+        function setSectionUnit(section, unit) {
+            units[section] = unit;
+            ['days', 'hours', 'mins'].forEach(u => {
+                document.getElementById(`${section}-unit-${u}`).className = "py-1.5 text-xs font-bold rounded-md text-slate-400";
+            });
+
+            if (unit === 'Days') document.getElementById(`${section}-unit-days`).className = "py-1.5 text-xs font-bold rounded-md bg-gold-500 text-dark-950";
+            if (unit === 'Hours') document.getElementById(`${section}-unit-hours`).className = "py-1.5 text-xs font-bold rounded-md bg-gold-500 text-dark-950";
+            if (unit === 'Minutes') document.getElementById(`${section}-unit-mins`).className = "py-1.5 text-xs font-bold rounded-md bg-gold-500 text-dark-950";
+
+            document.getElementById(`${section}-val-label`).innerText = unit;
+            calculateLivePoints();
+        }
+
+        function generateTimeSlots(sectionId) {
+            const grid = document.getElementById(`${sectionId}-slots-grid`);
+            grid.innerHTML = '';
+
+            for (let h = 0; h < 24; h++) {
+                for (let m = 0; m < 60; m += 30) {
+                    const startH = String(h).padStart(2, '0');
+                    const startM = String(m).padStart(2, '0');
+                    const endH = m === 30 ? String((h + 1) % 24).padStart(2, '0') : startH;
+                    const endM = m === 30 ? '00' : '30';
+                    const slotLabel = `${startH}:${startM}-${endH}:${endM}`;
+
+                    const btn = document.createElement('button');
+                    btn.type = 'button';
+                    btn.className = `p-1.5 rounded border border-emerald-500/40 bg-emerald-500/10 text-[10px] font-mono flex flex-col items-center justify-center hover:border-gold-500 transition relative text-slate-300`;
+                    btn.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-emerald-500 mb-0.5"></span>${slotLabel}`;
+                    
+                    btn.onclick = () => {
+                        if (selectedSlots[sectionId].has(slotLabel)) {
+                            selectedSlots[sectionId].delete(slotLabel);
+                            btn.classList.remove('border-gold-500', 'bg-gold-500/20', 'text-gold-400');
+                        } else {
+                            selectedSlots[sectionId].add(slotLabel);
+                            btn.classList.add('border-gold-500', 'bg-gold-500/20', 'text-gold-400');
+                        }
+                    };
+                    grid.appendChild(btn);
+                }
             }
-            return select.value;
+        }
+
+        function getMinutes(section) {
+            const val = parseFloat(document.getElementById(`${section}-speedups`).value) || 0;
+            if (units[section] === 'Days') return val * 1440;
+            if (units[section] === 'Hours') return val * 60;
+            return val;
         }
 
         function calculateLivePoints() {
-            const constMins = getMinutes('const');
-            const resMins = getMinutes('res');
-            const troopMins = getMinutes('troop');
-            const genMins = getMinutes('gen');
+            const d1Mins = getMinutes('d1');
+            const d2Mins = getMinutes('d2');
+            const d4Mins = getMinutes('d4');
+            const totalPoints = (d1Mins + d2Mins + d4Mins) * 30;
 
-            document.getElementById('points-construction').innerText = `${(constMins * 30).toLocaleString()} Pts`;
-            document.getElementById('points-research').innerText = `${(resMins * 30).toLocaleString()} Pts`;
-            document.getElementById('points-troops').innerText = `${(troopMins * 30).toLocaleString()} Pts`;
-            document.getElementById('points-general').innerText = `${(genMins * 30).toLocaleString()} Pts`;
-
-            const totalPoints = (constMins + resMins + troopMins + genMins) * 30;
             document.getElementById('total-points-preview').innerText = `${totalPoints.toLocaleString()} Points`;
             return totalPoints;
         }
 
-        function getMinutes(prefix) {
-            const d = parseInt(document.getElementById(`${prefix}-d`).value) || 0;
-            const h = parseInt(document.getElementById(`${prefix}-h`).value) || 0;
-            const m = parseInt(document.getElementById(`${prefix}-m`).value) || 0;
-            return (d * 1440) + (h * 60) + m;
-        }
-
-        function checkForExistingEntry() {
-            const name = document.getElementById('player-name').value.trim().toLowerCase();
-            const alliance = getSelectedAlliance().toLowerCase();
-
-            if(!name || !alliance) {
-                document.getElementById('update-alert').classList.add('hidden');
-                document.getElementById('btn-text').innerText = "Submit Speedup Data";
-                return;
-            }
-
-            const existing = memberSubmissions.find(s => s.name.toLowerCase() === name && s.alliance.toLowerCase() === alliance);
-            if (existing) {
-                document.getElementById('update-alert').classList.remove('hidden');
-                document.getElementById('btn-text').innerText = "Update Existing Entry";
+        function handleAllianceChange() {
+            const select = document.getElementById('player-alliance');
+            const otherContainer = document.getElementById('other-alliance-container');
+            if (select.value === 'Other') {
+                otherContainer.classList.remove('hidden');
             } else {
-                document.getElementById('update-alert').classList.add('hidden');
-                document.getElementById('btn-text').innerText = "Submit Speedup Data";
+                otherContainer.classList.add('hidden');
             }
         }
 
         function handleFormSubmit(e) {
             e.preventDefault();
 
-            const name = document.getElementById('player-name').value.trim();
-            const alliance = getSelectedAlliance();
+            const allianceSelect = document.getElementById('player-alliance').value;
+            const alliance = allianceSelect === 'Other' 
+                ? document.getElementById('other-alliance-input').value 
+                : allianceSelect;
 
-            const constMins = getMinutes('const');
-            const resMins = getMinutes('res');
-            const troopMins = getMinutes('troop');
-            const genMins = getMinutes('gen');
-            const totalMins = constMins + resMins + troopMins + genMins;
-            const totalPoints = totalMins * 30;
-
-            const submissionData = {
-                id: name.toLowerCase() + "_" + alliance.toLowerCase(),
-                name: name,
+            const entryData = {
+                id: Date.now(),
+                playerName: document.getElementById('player-name').value,
                 alliance: alliance,
-                constMins: constMins,
-                resMins: resMins,
-                troopMins: troopMins,
-                genMins: genMins,
-                totalMins: totalMins,
-                totalPoints: totalPoints,
-                timestamp: new Date().toISOString()
+                submittedAt: new Date().toISOString(),
+                screenshot: uploadedScreenshot,
+                totalPoints: calculateLivePoints(),
+                day1: {
+                    speedupMins: getMinutes('d1'),
+                    trueGold: parseFloat(document.getElementById('d1-truegold').value) || 0,
+                    temperedTrueGold: parseFloat(document.getElementById('d1-tempered').value) || 0,
+                    slots: Array.from(selectedSlots.d1)
+                },
+                day2: {
+                    speedupMins: getMinutes('d2'),
+                    trueGoldDust: parseFloat(document.getElementById('d2-truegold-dust').value) || 0,
+                    slots: Array.from(selectedSlots.d2)
+                },
+                day4: {
+                    speedupMins: getMinutes('d4'),
+                    slots: Array.from(selectedSlots.d4)
+                }
             };
 
-            memberSubmissions = memberSubmissions.filter(s => s.id !== submissionData.id);
-            memberSubmissions.push(submissionData);
-
-            localStorage.setItem("kvk_submissions", JSON.stringify(memberSubmissions));
+            const existingEntries = JSON.parse(localStorage.getItem('kvk_submissions') || '[]');
+            existingEntries.push(entryData);
+            localStorage.setItem('kvk_submissions', JSON.stringify(existingEntries));
 
             document.getElementById('success-message').classList.remove('hidden');
             setTimeout(() => {
                 document.getElementById('success-message').classList.add('hidden');
             }, 4000);
         }
+
+        generateTimeSlots('d1');
+        generateTimeSlots('d2');
+        generateTimeSlots('d4');
     </script>
 </body>
 </html>
